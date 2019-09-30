@@ -259,6 +259,15 @@ ggplot(data=allinfo, mapping=aes(x=Sample, y=log2(Count))) +
   geom_boxplot()
 ```
 
+Note that we get a warning here about rows containing non-finite values being removed. This is because some of the genes have a count of zero in the samples and a log of zero is undefined. We can add a small number to every count to avoid the zeros being dropped.
+
+```{r}
+ggplot(data=allinfo, mapping=aes(x=Sample, y=log2(Count + 1))) + 
+  geom_boxplot()
+```
+
+The box plots show that the distributions of the samples are not identical but they are not very different.
+
 Box plots are useful summaries, but hide the shape of the distribution. For example, if the distribution is bimodal, we would not see it in a boxplot. An alternative to the boxplot is the **violin plot**, where the shape (of the density of points) is drawn. See here for an example of how differences in distribution may be hidden in box plots but revealed with violin plots. We could also make jitter plots. A **jitter plot** is similar to a scatter plot. It adds a small amount of random variation to the location of each point so they don’t overlap. There are too many points in this case for the jitter plots to be useful but this is just to demonstrate, as [jitter with and without boxplot](https://simplystatistics.org/2019/02/21/dynamite-plots-must-die/) is a commonly used ggplot type. We will also make use of jitter plots later.
 
 #### Exercise 
@@ -273,14 +282,14 @@ What if we would like to add some colour to the plot, for example, a different c
 If we look at the `geom_boxplot` help we can see under the heading called "Aesthetics" that there's an option for colour. Let's try adding that to our plot. We'll specify we want to map the Sample column to `colour=`. As we are mapping colour to a column in our data we need to put this inside the `aes()`.
 
 ```{r}
-ggplot(data=allinfo, mapping=aes(x=Sample, y=log2(Count), colour=Sample)) + 
+ggplot(data=allinfo, mapping=aes(x=Sample, y=log2(Count + 1), colour=Sample)) + 
   geom_boxplot()
 ```
 
 Hmm colouring the edges wasn’t quite what we had in mind. Look at the help for `geom_boxplot` to see what other aesthetic we could use. Let's try `fill=` instead.
 
 ```{r}
-ggplot(data=allinfo, mapping=aes(x=Sample, y=log2(Count), fill=Sample)) + 
+ggplot(data=allinfo, mapping=aes(x=Sample, y=log2(Count + 1), fill=Sample)) + 
   geom_boxplot()
 ```
 
@@ -306,7 +315,7 @@ mycolours <- c("turquoise", "plum", "snow", "mistyrose", "lemonchiffon", "chocol
 Then we give these colours to  `+ scale_fill_manual(values=mycolours)`.
 
 ```{r}
-ggplot(data=allinfo, mapping=aes(x=Sample, y=log2(Count), fill=characteristics)) + 
+ggplot(data=allinfo, mapping=aes(x=Sample, y=log2(Count + 1), fill=characteristics)) + 
   geom_boxplot() +
   scale_fill_manual(values=mycolours)
 ```
@@ -314,7 +323,7 @@ ggplot(data=allinfo, mapping=aes(x=Sample, y=log2(Count), fill=characteristics))
 There are built-in colour palettes that can be handy to use, where the sets of colours are predefined. `scale_fill_brewer()` is a popular one (there is also `scale_colour_brewer()`). You can take a look at the help for `scale_fill_brewer()` to see what pallettes are available. There is also an R colours cheatsheet that shows the colours of the palettes [here](https://www.nceas.ucsb.edu/~frazier/RSpatialGuides/colorPaletteCheatsheet.pdf). There's one called "Dark2", let's have a look at that.
 
 ```{r}
-ggplot(data=allinfo, mapping=aes(x=Sample, y=log2(Count), fill=characteristics)) + 
+ggplot(data=allinfo, mapping=aes(x=Sample, y=log2(Count + 1), fill=characteristics)) + 
   geom_boxplot() +
   scale_fill_brewer(palette = "Dark2")
 ```
