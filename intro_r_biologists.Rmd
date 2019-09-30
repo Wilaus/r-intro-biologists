@@ -72,7 +72,12 @@ The **tidyverse** is a collection of packages that includes  **`ggplot2`** and w
 \  
 \  
 
-To install the tidyverse package you type `install.packages('tidyverse')`.  
+To install the tidyverse package you can use the `install.packages` function.
+
+```{r, eval=FALSE}
+install.packages('tidyverse')
+```
+
 
 ### RNA-seq dataset
 In this tutorial, we will learn some R through creating plots to visualise data from an RNA-seq experiment. We will create some plots using published RNA-seq data from the paper by [Fu et al. 2015](https://www.ncbi.nlm.nih.gov/pubmed/25730472). This study examined expression in basal and luminal cells from mice at different stages (virgin, pregnant and lactating). There are 2 samples per group and 6 groups, 12 samples in total. In this first session we will generate some plots to explore the data, to see if it looks ok.
@@ -117,7 +122,7 @@ sampleinfo <- read_csv("data/GSE60450_filtered_metadata.csv")
 
 ```
 
-In R we use `<-` to assign values to objects. `<-` is the **assignment operator**.  It assigns values on the right to objects on the left. So to create an object, we need to give it a name (e.g. `counts), followed by the assignment operator `<-`, and the value we want to give it. We can give an object almost any name we want but there are some rules and conventions as described [here](https://datacarpentry.org/R-genomics/01-intro-to-R.html#notes_on_objects)
+In R we use `<-` to assign values to objects. `<-` is the **assignment operator**.  It assigns values on the right to objects on the left. So to create an object, we need to give it a name (e.g. `counts`), followed by the assignment operator `<-`, and the value we want to give it. We can give an object almost any name we want but there are some rules and conventions as described [here](https://datacarpentry.org/R-genomics/01-intro-to-R.html#notes_on_objects)
 
 We can read in a file from a path on our computer on on the web and use this as the value. Note that we need to put quotes ("") around file paths.
 
@@ -132,10 +137,16 @@ In the Environment tab we can see how many rows and columns the object contains 
 
 # Formatting the data
 
+
+![](images/reshape_data.png)
+
+
 ```{r}
 # format - convert to long/tidy format
 seqdata <- gather(counts, key=Sample, value=Count, starts_with("GSM"))
 ```
+
+![](images/join_data.png)
 
 ```{r}
 # Join those two tables together using join
@@ -152,13 +163,9 @@ when making figures with **`ggplot2`**. We will discuss tidy data more later in 
 ggplot graphics are built step by step by adding new elements. Adding layers in
 this fashion allows for extensive flexibility and customization of plots.
 
-To build a ggplot, we use the following basic template that can be used for different types of plots:
+To build a ggplot, we use the following basic template that can be used for different types of plots. Three things are required for a ggplot:
 
-```{r, error=TRUE}
-ggplot(data=, mapping=aes()) + geom_ ()
-```
-
-Three things are required for a ggplot:
+![](images/ggplot_template.png)
 
 1. The data
 2. The mapping of variables (columns) in the data to visual properties (called aesthetics in ggplot2) of objects in the plot
@@ -175,7 +182,7 @@ ggplot(data=allinfo, mapping=aes(x=Sample, y=Count)) +
 
 We have generated our first plot!
 
-But it looks a bit weird. It's because we have some genes with extremely high counts. To make it easier to visualise the distributions we usually plot the logarithm of RNA-seq counts. We'll plot the Sample on the X axis and log2 Counts on the y axis. We can log the Counts within the `aes()`. (The sample labels are also overlapping each other, we will show how to fix this later)
+But it looks a bit weird. It's because we have some genes with extremely high counts. To make it easier to visualise the distributions we usually plot the logarithm of RNA-seq counts. We'll plot the Sample on the X axis and log~2~ Counts on the y axis. We can log the Counts within the `aes()`. (The sample labels are also overlapping each other, we will show how to fix this later)
 
 ```{r}
 ggplot(data=allinfo, mapping=aes(x=Sample, y=log2(Count))) + 
@@ -186,9 +193,10 @@ Box plots are useful summaries, but hide the shape of the distribution. For exam
 
 #### Exercise 
 You can easily make different types of plots with ggplotby using different geoms. If you type "geom" in RStudio, RStudio will show you the different types of geoms you can use. Using the same data (same x and y values)
-1) Make a violin plot (geom_violin)
-2) Make a jitter plot (geom_jitter)
-3) Make a boxplot with a jitter plot overlaid (Hint: you can add multiple geoms with + )
+
+1. Make a violin plot (geom_violin)
+2. Make a jitter plot (geom_jitter)
+3. Make a boxplot with a jitter plot overlaid (Hint: you can add multiple geoms with + )
 
 #### Solution
 ```{r}
@@ -222,10 +230,11 @@ That looks better. `fill=` is used to **fill** in areas in ggplot2 plots, wherea
 A really nice feature about ggplot is that we can easily colour by another variable e.g. cell type (basal vs luminal) by simply changing the column we give to `fill=`.
 
 #### Exercise 
-Colour the plots by other variables (columns) in the metadata file
-1) characteristics
-2) immunophenotype
-2) `developmental stage` (Check what happens if you don't use backticks)
+Colour the plots by other variables (columns) in the metadata file:
+
+1. characteristics
+2. immunophenotype
+3. `developmental stage` (Check what happens if you don't use backticks)
 
 #### Solution
 ```{r}
