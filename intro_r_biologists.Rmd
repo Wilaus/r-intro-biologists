@@ -1,12 +1,11 @@
 ---
 title: "Introduction to R for Biologists"
-date: "`r format(Sys.time(), '%d %B %Y')`"
 output:
   html_notebook:
     toc: yes
     toc_depth: 3
     toc_float: yes
-
+date: "`r format(Sys.time(), '%d %B %Y')`"
 ---
 
 # Introduction to RStudio
@@ -190,17 +189,6 @@ You can easily make different types of plots with ggplotby using different geoms
 2) Make a jitter plot (geom_jitter)
 3) Make a boxplot with a jitter plot overlaid (Hint: you can add multiple geoms with + )
 
-#### Solution
-```{r}
-ggplot(data=allinfo, mapping=aes(x=Sample, y=log2(Count))) + 
-  geom_violin()
-ggplot(data=allinfo, mapping=aes(x=Sample, y=log2(Count))) + 
-  geom_jitter()
-ggplot(data=allinfo, mapping=aes(x=Sample, y=log2(Count))) + 
-  geom_boxplot() +
-  geom_jitter()
-```
-
 What if we would like to add some colour to the plot, for example, a different colour bar for each sample. 
 
 If we look at the `geom_boxplot` help we can see under the heading called "Aesthetics" that there's an option for colour. Let's try adding that to our plot. We'll specify we want to map the Sample column to `colour=`. As we are mapping colour to a column in our data we need to put this inside the `aes()`.
@@ -227,13 +215,6 @@ Colour the plots by other variables (columns) in the metadata file
 2) immunophenotype
 2) `developmental stage` (Check what happens if you don't use backticks)
 
-#### Solution
-```{r}
-ggplot(data=allinfo, mapping=aes(x=Sample, y=log2(Count), fill=immunophenotype)) + 
-  geom_boxplot() 
-ggplot(data=allinfo, mapping=aes(x=Sample, y=log2(Count), fill=`developmental stage`)) + 
-  geom_boxplot() 
-```
 
 # Specifying colours
 
@@ -261,16 +242,6 @@ ggplot(data=allinfo, mapping=aes(x=Sample, y=log2(Count), fill=characteristics))
 
 #### Exercise
 Make a colourblind friendly plot. Hint there are colourblind friendly palettes [here](http://www.cookbook-r.com/Graphs/Colors_(ggplot2)/#a-colorblind-friendly-palette)
-
-#### Solution
-```{r}
-cbPalette <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2")
-
-ggplot(data=allinfo, mapping=aes(x=Sample, y=log2(Count), fill=characteristics)) + 
-  geom_boxplot() +
-  scale_fill_manual(values=cbPalette)
-```
-
 
 # Make subplots for each gene
 

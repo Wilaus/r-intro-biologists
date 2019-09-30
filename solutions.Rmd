@@ -1,0 +1,54 @@
+---
+title: "Introduction to R for Biologists - Solutions"
+date: "`r format(Sys.time(), '%d %B %Y')`"
+output:
+  html_notebook:
+    toc: yes
+    toc_depth: 3
+    toc_float: yes
+---
+
+#### Exercise 
+You can easily make different types of plots with ggplotby using different geoms. If you type "geom" in RStudio, RStudio will show you the different types of geoms you can use. Using the same data (same x and y values)
+1) Make a violin plot (geom_violin)
+2) Make a jitter plot (geom_jitter)
+3) Make a boxplot with a jitter plot overlaid (Hint: you can add multiple geoms with + )
+
+#### Solution
+```{r}
+ggplot(data=allinfo, mapping=aes(x=Sample, y=log2(Count))) + 
+  geom_violin()
+ggplot(data=allinfo, mapping=aes(x=Sample, y=log2(Count))) + 
+  geom_jitter()
+ggplot(data=allinfo, mapping=aes(x=Sample, y=log2(Count))) + 
+  geom_boxplot() +
+  geom_jitter()
+```
+
+
+#### Exercise 
+Colour the plots by other variables (columns) in the metadata file
+1) characteristics
+2) immunophenotype
+2) `developmental stage` (Check what happens if you don't use backticks)
+
+#### Solution
+```{r}
+ggplot(data=allinfo, mapping=aes(x=Sample, y=log2(Count), fill=immunophenotype)) + 
+  geom_boxplot() 
+ggplot(data=allinfo, mapping=aes(x=Sample, y=log2(Count), fill=`developmental stage`)) + 
+  geom_boxplot() 
+```
+
+
+#### Exercise
+Make a colourblind friendly plot. Hint there are colourblind friendly palettes [here](http://www.cookbook-r.com/Graphs/Colors_(ggplot2)/#a-colorblind-friendly-palette)
+
+#### Solution
+```{r}
+cbPalette <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2")
+
+ggplot(data=allinfo, mapping=aes(x=Sample, y=log2(Count), fill=characteristics)) + 
+  geom_boxplot() +
+  scale_fill_manual(values=cbPalette)
+```
