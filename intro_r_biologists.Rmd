@@ -77,7 +77,8 @@ In this tutorial, we will learn some R through creating plots to visualise data 
 
 ![](images/mouse_exp.png)
 
-We will use the raw counts here. These are the counts of reads for each gene for each sample. The higher the number of counts the more the gene is expressed.
+### GREIN (GEO RNA-seq Experiments Interactive Navigator) 
+We obtained a counts file for this dataset from the [GREIN platform](https://www.nature.com/articles/s41598-019-43935-8). GREIN provides >6,500 published datasets from GEO that have been uniformly processed. It is available at http://www.ilincs.org/apps/grein/. You can search for a dataset of interest using the GEO code. We obtained the dataset used here using the code GSE60450. GREIN provide QC metrics for the RNA-seq datasets and both raw and normalized counts. We will use the normalized counts here. These are the counts of reads for each gene for each sample normalized for differences in sequencing depth and composition bias. The higher the number of counts the more the gene is expressed.
 \  
 \  
 
