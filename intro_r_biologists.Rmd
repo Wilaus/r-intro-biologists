@@ -57,7 +57,7 @@ In the window that appears, find the folder you created (e.g. `Intro_R_course`),
 
 
 ### Data files
-The data files required for this workshop are available on [GitHub](https://github.com/PMacDaSci/r-intro-biologists/tree/master/data). To download the data.zip file, click on the file then click 'Download'. Unzip the file and store this `data` folder in your working directory.
+The data files required for this workshop are available on [GitHub](https://github.com/mblue9/r-intro-biologists/blob/master/data.zip). To download the data.zip file, click the 'Download' button that's in the middle of the page. Unzip the file and store this `data` folder in your working directory.
 
 
 ### Tidyverse
