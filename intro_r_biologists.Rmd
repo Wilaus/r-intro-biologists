@@ -1,5 +1,6 @@
 ---
 title: "Introduction to R for Biologists"
+author: "Maria Doyle, Jessica Chung, Vicky Perreau"
 output:
   html_notebook:
     toc: yes
@@ -8,7 +9,11 @@ output:
 date: "`r format(Sys.time(), '%d %B %Y')`"
 ---
 
-# RStudio
+# R for Biologists course
+
+R takes time to learn, like a spoken language. No one can expect to be an R expert after learning R for a few hours. This course has been designed to introduce biologists to R, showing some basics and some powerful things R can do. The aim is to give beginners the confidence to continue learning R, so the focus here is on tidyverse and visualisation of biological data, as we believe this is a productive and engaging way to start learning R.
+
+# Intro to R and RStudio
 
 RStudio is an interface that makes it easier to use R. There are four windows in RStudio. The screenshot below shows an [analogy linking the different RStudio windows to cooking](https://twitter.com/RLadiesNCL/status/1138812826917724160).
 
@@ -18,7 +23,7 @@ RStudio is an interface that makes it easier to use R. There are four windows in
 \  
 \  
 
-## R script
+## R script vs console
 
 There are two ways to work in RStudio in the console or in a script. We can type a command in the console and press `Enter/Return` to run it. Try running the command below in the console.
 
@@ -43,7 +48,7 @@ We can also add comments to a script. These are notes to ourself or others about
 
 ## Working directory
 
-Opening an RStudio session launches it from a specific location. This is the ‘working directory’. R looks in this directory by default to read in data and save files. You can find out what the working directory is by using the command `getwd()`. This shows you the path to your working directory in the console. In Mac this is in the format `/path/to/working/directory` and in Windows `C:\path\to\working\directory`. It is often useful to have your data and R scripts in the same directory and set this as your working directory. We will do this now. 
+Opening an RStudio session launches it from a specific location. This is the ‘working directory’. **R looks in the working directory by default to read in data and save files.** You can find out what the working directory is by using the command `getwd()`. This shows you the path to your working directory in the console. In Mac this is in the format `/path/to/working/directory` and in Windows `C:\path\to\working\directory`. It is often useful to have your data and R scripts in the same directory and set this as your working directory. We will do this now. 
 
 Make a folder for this course somewhere on your computer that you will be able to easily find. Name the folder for example, `Intro_R_course`. Then, to set this folder as your working directory:
 
@@ -55,16 +60,59 @@ In the window that appears, find the folder you created (e.g. `Intro_R_course`),
 
 ![](images/working_directory.png)
 
+## Packages
 
-### Data files
+If it's not already installed on your computer, you can use the `install.packages` **function** to install a **package**.
+
+```{r, eval=FALSE}
+install.packages('tidyverse')
+```
+
+We will see many functions in this tutorial. Functions are "canned scripts" that automate more complicated sets of commands. Many functions are predefined, or can be made available by importing R packages. A function usually takes one or more inputs called *arguments*. Here tidyverse is the argument to the `install.packages()` function. **Note that functions require parentheses after the function name.**
+
+## Getting help
+
+To see what any function in R does, type a `?` before the name and help information will appear in the Help panel on the right in RStudio. Or you can search the function name in the Help panel search box. Google and Stack Overflow are also useful resources for getting help.
+
+```{r, eval=FALSE}
+?install.packages
+```
+
+
+## Common R errors
+
+R error messages are common and can sometimes be cryptic. You most likely will encounter at least one error message during this tutorial. Some common reasons for errors are:
+
+- Case sensitivity - In R, as in other programming languages, case sensitivity is important. ?install.packages is different to ?Install.packages.
+- Missing commas
+- Mismatched parentheses or brackets
+- Not quoting file paths
+
+To see examples of some R error messages with explanations see [here]( https://github.com/noamross/zero-dependency-problems/issues/7)
+
+
+# Getting started with data
+
+
+## Data files
 The data files required for this workshop are available on [GitHub](https://github.com/mblue9/r-intro-biologists/blob/master/data.zip). To download the data.zip file, click the 'Download' button that's in the middle of the page. Unzip the file and store this `data` folder in your working directory.
 
 
-### Tidyverse
+## GREIN (GEO RNA-seq Experiments Interactive Navigator) 
+In this tutorial, we will learn some R through creating plots to visualise data from an RNA-seq experiment. RNA-seq counts file can be obtained from the [GREIN platform](https://www.nature.com/articles/s41598-019-43935-8). GREIN provides >6,500 published datasets from GEO that have been uniformly processed. It is available at http://www.ilincs.org/apps/grein/. You can search for a dataset of interest using the GEO code. We obtained the dataset used here using the code GSE60450. GREIN provide QC metrics for the RNA-seq datasets and both raw and normalized counts. We will use the normalized counts here. These are the counts of reads for each gene for each sample normalized for differences in sequencing depth and composition bias. The higher the number of counts the more the gene is expressed.
+\  
+\ 
+
+## RNA-seq dataset
+Here we will create some plots using RNA-seq data from the paper by [Fu et al. 2015](https://www.ncbi.nlm.nih.gov/pubmed/25730472), GEO code GSE60450. This study examined expression in basal and luminal cells from mice at different stages (virgin, pregnant and lactating). There are 2 samples per group and 6 groups, 12 samples in total.
+
+![](images/mouse_exp.png)
+
+## Tidyverse
 
 ![www.tidyverse.org](images/tidyverse.png){width=100% }
 
-The **tidyverse** is a collection of packages that includes  **`ggplot2`** and we will introduce you to some of these packages in this course.
+The **tidyverse** is a collection of R packages that includes the extremely widely used **`ggplot2`**. 
 
 \  
 \  
@@ -82,40 +130,16 @@ The **tidyverse** is a collection of packages that includes  **`ggplot2`** and w
 \  
 \  
 
-To install the tidyverse package you can use the `install.packages` function.
-
-```{r, eval=FALSE}
-install.packages('tidyverse')
-```
-
-
-### RNA-seq dataset
-In this tutorial, we will learn some R through creating plots to visualise data from an RNA-seq experiment. We will create some plots using published RNA-seq data from the paper by [Fu et al. 2015](https://www.ncbi.nlm.nih.gov/pubmed/25730472). This study examined expression in basal and luminal cells from mice at different stages (virgin, pregnant and lactating). There are 2 samples per group and 6 groups, 12 samples in total. In this first session we will generate some plots to explore the data, to see if it looks ok.
-
-![](images/mouse_exp.png)
-
-### GREIN (GEO RNA-seq Experiments Interactive Navigator) 
-We obtained a counts file for this dataset from the [GREIN platform](https://www.nature.com/articles/s41598-019-43935-8). GREIN provides >6,500 published datasets from GEO that have been uniformly processed. It is available at http://www.ilincs.org/apps/grein/. You can search for a dataset of interest using the GEO code. We obtained the dataset used here using the code GSE60450. GREIN provide QC metrics for the RNA-seq datasets and both raw and normalized counts. We will use the normalized counts here. These are the counts of reads for each gene for each sample normalized for differences in sequencing depth and composition bias. The higher the number of counts the more the gene is expressed.
-\  
-\  
 
 ## Loading the data
 
-We will begin by loading in the packages that we need.
+We use `library()` to load in the packages that we need.
 
 ```{r, message=FALSE}
 library(tidyverse)
 ```
 
-`library()` is the **function** in R that we use to load packages. We will see many functions in the course. Functions are "canned scripts" that automate more complicated sets of commands. Many functions are predefined, or can be made available by importing R *packages*. A function usually takes one or more inputs called *arguments*. Here tidyverse is the argument to the `library()` function. Note that functions require parentheses after the function name.
-
-The file we will use is a csv comma-separated file, so we will use the `read_csv()` function from the tidyverse **`readr`** package to read it in. Tsv stands for  There is also a `read_tsv()` function for tab-separated values.
-
-To see what the `read_csv()` function (or any function in R) does, type a `?` before the name and the help will appear in the Help panel on the right in RStudio. Or you can search the function name in the Help panel search box.
-
-```{r, eval=FALSE}
-?read_csv
-```
+The file we will use is a csv comma-separated file, so we will use the `read_csv()` function from the tidyverse. There is also a `read_tsv()` function for tab-separated values.
 
 We will use the counts file called `GSE60450_GeneLevel_Normalized(CPM.and.TMM)_data.csv` that's in a folder called `data` i.e. the path to the file should be `data/GSE60450_GeneLevel_Normalized(CPM.and.TMM)_data.csv`.
 
@@ -214,7 +238,7 @@ summary(counts)
 
 # Formatting the data
 
-We will first convert the data into tidy format to make it easier to work with.
+We will first convert the data from wide format into long format to make it easier to work with and plot with ggplot.
 
 ![](images/reshape_data.png)
 
@@ -229,6 +253,8 @@ seqdata
 
 ![](images/join_data.png)
 
+Here we see the function `c()` for the first time. We use this function extremely often in R when we have multiple items that we are *combining*. We will see it again in this tutorial.
+
 ```{r}
 allinfo <- full_join(seqdata, sampleinfo, by = c("Sample" = "X1"))
 ```
@@ -240,21 +266,19 @@ allinfo
 
 # Plotting with **`ggplot2`**
 
-**`ggplot2`** is a plotting package that makes it simple to create complex plots. One really great benefit of ggplot2 versus the older base R plotting is that we only need to make minimal changes if the underlying data change or if we decide to change our plot type, for example, from a bar plot to a box plot. This helps in creating publication quality plots with minimal amounts of adjustments and tweaking.
+**`ggplot2`** is a plotting package that makes it simple to create complex plots. One really great benefit of ggplot2 versus the older base R plotting is that we only need to make minimal changes if the underlying data change or if we decide to change our plot type, for example, from a box plot to a violin plot. This helps in creating publication quality plots with minimal amounts of adjustments and tweaking.
 
-**`ggplot2`** likes data in the 'long' format, also called 'tidy' format, i.e., a column for every variable, and a row for every observation. Well-structured data will save you lots of time
-when making figures with **`ggplot2`**. We will discuss tidy data more later in the course.
+**`ggplot2`** likes data in the 'long' format, i.e., a column for every variable, and a row for every observation, similar to what we created with `gather()`. Well-structured data will save you lots of time when making figures with **`ggplot2`**. We will discuss tidy data more later in the course.
 
-ggplot graphics are built step by step by adding new elements. Adding layers in
-this fashion allows for extensive flexibility and customization of plots.
+ggplot graphics are built step by step by adding new elements. Adding layers in this fashion allows for extensive flexibility and customization of plots.
 
 To build a ggplot, we use the following basic template that can be used for different types of plots. Three things are required for a ggplot:
 
 ![](images/ggplot_template.png)
 
 1. The data
-2. The mapping of variables (columns) in the data to visual properties (called aesthetics in ggplot2) of objects in the plot
-3. The type of plot – this is called a geom in ggplot2 terminology
+2. The columns in the data we want to map to visual properties (called aesthetics or aes in ggplot2) e.g. the columns for x vlaues, y vales and colours
+3. The type of plot (the geom_)
 
 There are different geoms we can use to create different types of plot e.g. bar plot versus box plot, to see some of the geoms available see the ggplot2 help or the handy [ggplot2 cheatsheet](https://github.com/rstudio/cheatsheets/raw/master/data-visualization-2.1.pdf).
 
@@ -286,11 +310,17 @@ The box plots show that the distributions of the samples are not identical but t
 Box plots are useful summaries, but hide the shape of the distribution. For example, if the distribution is bimodal, we would not see it in a boxplot. An alternative to the boxplot is the **violin plot**, where the shape (of the density of points) is drawn. See here for an example of how differences in distribution may be hidden in box plots but revealed with violin plots. We could also make jitter plots. A **jitter plot** is similar to a scatter plot. It adds a small amount of random variation to the location of each point so they don’t overlap. There are too many points in this case for the jitter plots to be useful but this is just to demonstrate, as [jitter with and without boxplot](https://simplystatistics.org/2019/02/21/dynamite-plots-must-die/) is a commonly used ggplot type. We will also make use of jitter plots later.
 
 #### Exercise 
-You can easily make different types of plots with ggplotby using different geoms. If you type "geom" in RStudio, RStudio will show you the different types of geoms you can use. Using the same data (same x and y values)
+You can easily make different types of plots with ggplot by using different geoms. If you type "geom" in RStudio, RStudio will show you the different types of geoms you can use. Using the same data (same x and y values), try editing the code below to make the plots listed in 1. 2. and 3.
+
+```{r}
+ggplot(data=allinfo, mapping=aes(x=Sample, y=log2(Count + 1), colour=Sample)) + 
+  geom_boxplot()
+```
 
 1. Make a violin plot (geom_violin)
 2. Make a jitter plot (geom_jitter)
 3. Make a boxplot with a jitter plot overlaid (Hint: you can add multiple geoms with + )
+
 
 What if we would like to add some colour to the plot, for example, a different colour bar for each sample. 
 
@@ -320,36 +350,11 @@ Colour the plots by other variables (columns) in the metadata file:
 3. `developmental stage` (Check what happens if you don't use backticks)
 
 
-# Specifying colours
-
-We might want to change the colours. To see what colour names are available you can type `colours()`. Note that here we see the function `c()` for the first time. We use function extremely often in R when we have multiple items that we are *combining*. Here we have two colours we want to use, so we need to use `c()` to combine them to give to `values=`.
-```{r}
-mycolours <- c("turquoise", "plum", "snow", "mistyrose", "lemonchiffon", "chocolate")
-```
-
-Then we give these colours to  `+ scale_fill_manual(values=mycolours)`.
-
-```{r}
-ggplot(data=allinfo, mapping=aes(x=Sample, y=log2(Count + 1), fill=characteristics)) + 
-  geom_boxplot() +
-  scale_fill_manual(values=mycolours)
-```
-
-There are built-in colour palettes that can be handy to use, where the sets of colours are predefined. `scale_fill_brewer()` is a popular one (there is also `scale_colour_brewer()`). You can take a look at the help for `scale_fill_brewer()` to see what pallettes are available. There is also an R colours cheatsheet that shows the colours of the palettes [here](https://www.nceas.ucsb.edu/~frazier/RSpatialGuides/colorPaletteCheatsheet.pdf). There's one called "Dark2", let's have a look at that.
-
-```{r}
-ggplot(data=allinfo, mapping=aes(x=Sample, y=log2(Count + 1), fill=characteristics)) + 
-  geom_boxplot() +
-  scale_fill_brewer(palette = "Dark2")
-```
-
-
-#### Exercise
-Make a colourblind friendly plot. Hint there are colourblind friendly palettes [here](http://www.cookbook-r.com/Graphs/Colors_(ggplot2)/#a-colorblind-friendly-palette)
-
 # Make subplots for each gene
 
-With ggplot we can easily make subplots using *faceting*. For example we can make stripcharts, plotting expression by groups for each gene. First we'll use `mutate` to add a column with shorter group names to use in the plot as the group names in the characteristics column are quite long.
+With ggplot we can easily make subplots using *faceting*. For example we can make stripcharts, plotting expression by the groups (basal virgin, basal pregnant, basal lactating, luminal virgin, luminal pregnant, luminal lactating) for each gene. 
+
+First we'll use `mutate()` to add a column with shorter group names to use in the plot, as the group names in the characteristics column are quite long.
 
 ```{r}
  allinfo <- mutate(allinfo, Group=case_when(                                        
@@ -362,19 +367,25 @@ With ggplot we can easily make subplots using *faceting*. For example we can mak
        ))
 ```
 
+Have a look at this data using `head()`. You should see a new column called `Group` has been added to the end.
+
+```{r}
+head(allinfo)
+```
+
 We can make plots for a set of genes.
 
 ```{r}
-mygenes <- c("Acta2", "COX1", "Csn1s1", "Csn1s2a", "Csn2", "Csn3")
+mygenes <- c("Csn1s2a", "Csn1s1", "Csn2", "Glycam1", "COX1", "Trf", "Wap", "Eef1a1")
 ```
 
-
-These are the top 6 genes with highest count across all samples that can be obtained with group_by and summarise
-mygenes <- allinfo %>% 
-group_by(gene_symbol) %>% 
-summarise(Total_count=sum(Count)) %>% 
-top_n(6, Total_count)%>%
-pull(gene_symbol)
+> We could specify any genes in the data to plot. These genes were the 8 genes with the highest counts summed across all samples, obtained using the command below.  
+>allinfo %>%  
+>  group_by(gene_symbol) %>%  
+>  summarise(Total_count=sum(Count)) %>%  
+>  arrange(desc(Total_count)) %>% 
+>  head(n=8) %>% 
+>  pull(gene_symbol) 
 
 We filter our data for just these genes of interest.
 
@@ -383,21 +394,23 @@ mygenes_counts <- filter(allinfo, gene_symbol %in% mygenes)
 ```
 
 
-We can make boxplots for just these genes. We *facet* on the gene_symbol column.
+We can make boxplots for just these genes. We *facet* on the `gene_symbol` column using `facet_wrap()`. We add the tilde symbol `~` in front of the column we want to facet on. 
 
 ```{r}
-ggplot(data=mygenes_counts, mapping=aes(x=Group, y=Count, fill=Group)) +
+ggplot(data=mygenes_counts, mapping=aes(x=Group, y=log2(Count), fill=Group)) +
   geom_boxplot() +
   facet_wrap(~gene_symbol)
 ```
-We only have two values per group so we could just plot the individual points. We could use 
-geom_point to make a scatterplot.
+
+Here we only have two values per group so we could just plot the individual points. We could use 
+`geom_point` to make a scatterplot.
 ```{r}
 ggplot(data=mygenes_counts, mapping=aes(x=Group, y=Count)) +
   geom_point() +
   facet_wrap(~gene_symbol)
 ```
-The points are overlapping so we will use geom_jitter which adds a small amount of random variation.
+
+The points are overlapping so we will use `geom_jitter` which adds a small amount of random variation.
 
 ```{r}
 ggplot(data=mygenes_counts, mapping=aes(x=Group, y=Count)) +
@@ -413,7 +426,36 @@ ggplot(data=mygenes_counts, mapping=aes(x=Group, y=Count, colour=Group)) +
   facet_wrap(~gene_symbol) 
 ```
 
-## Modifying the plot
+# Modifying the plot
+
+### Specifying colours
+
+We might want to change the colours. To see what colour names are available you can type `colours()`. There is also an [R colours cheatsheet](https://www.nceas.ucsb.edu/~frazier/RSpatialGuides/colorPaletteCheatsheet.pdf) that shows what the colours look like.
+```{r}
+mycolours <- c("turquoise", "plum", "tomato", "violet", "steelblue", "chocolate")
+```
+
+Then we then add these colours to the plot using a `+` and `scale_colour_manual(values=mycolours)`.
+
+```{r}
+ggplot(data=mygenes_counts, mapping=aes(x=Group, y=Count, colour=Group)) +
+  geom_jitter() +
+  facet_wrap(~gene_symbol) +
+  scale_colour_manual(values=mycolours)
+```
+
+There are built-in colour palettes that can be handy to use, where the sets of colours are predefined. `scale_colour_brewer()` is a popular one (there is also `scale_fill_brewer()`). You can take a look at the help for `scale_colour_brewer()` to see what palettes are available. The [R colours cheatsheet](https://www.nceas.ucsb.edu/~frazier/RSpatialGuides/colorPaletteCheatsheet.pdf) also shows what the colours of the palettes look like. There's one called "Dark2", let's have a look at that. 
+
+```{r}
+ggplot(data=mygenes_counts, mapping=aes(x=Group, y=Count, colour=Group)) +
+  geom_jitter() +
+  facet_wrap(~gene_symbol) +
+  scale_colour_brewer(palette = "Dark2")
+```
+
+
+#### Exercise
+Make a colourblind friendly plot. Hint there are colourblind friendly palettes [here](http://www.cookbook-r.com/Graphs/Colors_(ggplot2)/#a-colorblind-friendly-palette)
 
 ### Axis labels and Title
 
@@ -493,16 +535,20 @@ dev.off()
 ```
 
 
-## Key Points
-- We use the `library()` function to load packages we want to use. Note that they need to be already installed with e.g. `install.packages()`. 
-- We can read in csv files with `read_csv()`.
+# Key Points
+- RStudio is an interface that makes it easier to use R.
+- `install.packages()` is used to install a packages onto your computer, `library()` is used when you want to use a package in an R script or session
+- `read_csv()` or `read_tsv()` can be used to read in csv and tsv files respectively
+- Useful commands for checking data are `dim()`, `head()`, `tail()`, `str()`, `summary()`, `View()`
+- `gather()` can be used to convert data into long format for ggplot
+- `full_join()` can be used to join different files 
 - **`ggplot2`** is a plotting package that makes it simple to create complex plots and have 3 components: data (dataset), mapping (columns to plot) and geom (type of plot).
-- The `+` sign is used to add geoms (and new layers as we will see later in the course). It must be placed at the end of the preceding line. If it is added at the beginning of the line, **`ggplot2`** will return an error message.
-- ggplot2 plots can be easily coloured by columns in the dataset. `fill=` can be used to colour areas.
-- A pdf of the plot can be generated with `pdf()` and `dev.off()`
+- The `+` sign is used to add layers. It must be placed at the end of the preceding line. If it is added at the beginning of the line, **`ggplot2`** will return an error message.
+- `facet_wrap()` can be used to make subplots
+- ggplot2 plots can be easily coloured by columns in the dataset. `fill=` can be used to colour areas and `colour=` to colour points and lines
 
 
-## Further Reading
-[Intro to R and tidyverse](https://pmacdasci.github.io/r-intro-tidyverse/)
-[Top 50 Ggplot Visualisations]( http://r-statistics.co/Top50-Ggplot2-Visualizations-MasterList-R-Code.html)
+# Further Reading
+[Intro to R and tidyverse](https://pmacdasci.github.io/r-intro-tidyverse/)  
+[Top 50 Ggplot Visualisations]( http://r-statistics.co/Top50-Ggplot2-Visualizations-MasterList-R-Code.html)  
 [R for Data Science](https://r4ds.had.co.nz/)
