@@ -8,7 +8,7 @@ output:
 date: "`r format(Sys.time(), '%d %B %Y')`"
 ---
 
-# Introduction to RStudio
+# RStudio
 
 RStudio is an interface that makes it easier to use R. There are four windows in RStudio. The screenshot below shows an [analogy linking the different RStudio windows to cooking](https://twitter.com/RLadiesNCL/status/1138812826917724160).
 
@@ -18,23 +18,40 @@ RStudio is an interface that makes it easier to use R. There are four windows in
 \  
 \  
 
+## R script
+
+There are two ways to work in RStudio in the console or in a script. We can type a command in the console and press `Enter/Return` to run it. Try running the command below in the console.
+
+```{r}
+1 + 1
+```
+
+Or we can use an R script. To create a script, from the top menu in RStudio: `File > New File > R Script`. Save it as `intro.R`. Now type the command below in the script. This time you use `Cmd/Ctrl` + `Enter/Return`. This sends the commmand where the cursor is from the script to the console. You can highlight multiple commands and then press `Cmd/Ctrl` + `Enter/Return` to run them one after the other.
+
+```{r}
+2 + 2
+```
+
+As the RStudio screenshot above explains, if we work in the console we don't have a good record (recipe) of what we've done. We can see commands we've run in the History panel (top right window), and we can go backwards and forwards through our history in the console using the up arrow and down arrow. But the history includes everything we've tried to run, including our mistakes so it is good practice to use an R script.
+
+We can also add comments to a script. These are notes to ourself or others about the commands in the script. Comments start with a `#` which tells R not to run them as commands.
+
+```{r}
+# testing R
+2 + 2
+```
 
 ## Working directory
-Every file on your computer is located in a specific location. This location can be referred to by a path. In Mac, paths look something like this: `/Users/doylemaria/Documents/`. In Windows, paths look something like this: `C:\Users\doylemaria\Documents\`.
 
-When you open a RStudio session, it launches from a specific location. You can find out where this is using the command `getwd()`. This location called the ‘working directory’. R will, by default, look in this directory when reading in data and write out files/plots to this directory. It is often useful to have your data and R Scripts in the same directory and set this as your working directory.
+Opening an RStudio session launches it from a specific location. This is the ‘working directory’. R looks in this directory by default to read in data and save files. You can find out what the working directory is by using the command `getwd()`. This shows you the path to your working directory in the console. In Mac this is in the format `/path/to/working/directory` and in Windows `C:\path\to\working\directory`. It is often useful to have your data and R scripts in the same directory and set this as your working directory. We will do this now. 
 
-You can set your working directory to be anywhere you like and we will now do this:
+Make a folder for this course somewhere on your computer that you will be able to easily find. Name the folder for example, `Intro_R_course`. Then, to set this folder as your working directory:
 
-Make a folder for this course, somewhere sensible on your computer that you will be able to easily find. Name the folder for example, `Intro_R_course`.
-
-Go back to your RStudio window, go to the bottom right panel, click on the ‘Files’ tab and then click on the three dots on the top right hand corner, as shown below.
+In RStudio click on the ‘Files’ tab and then click on the three dots, as shown below.
 
 ![](images/three_dots.png)
 
-This will open up a new window which lets you explore the files and folders on your computer. Find the new folder you created (e.g. `Intro_R_course`), click on it, then click ‘Open’.
-
-The files tab will now show the contents of your new folder (which should be empty). At the top of the files tab, click on `More > Set As Working Directory`, as shown below.
+In the window that appears, find the folder you created (e.g. `Intro_R_course`), click on it, then click ‘Open’. The files tab will now show the contents of your new folder. Click on `More > Set As Working Directory`, as shown below.
 
 ![](images/working_directory.png)
 
@@ -83,9 +100,6 @@ We obtained a counts file for this dataset from the [GREIN platform](https://www
 \  
 
 ## Loading the data
-
-First let's open a new R script. From the top menu in RStudio: `File > New File > R Script`.
-Let's save it as `intro.R`.
 
 We will begin by loading in the packages that we need.
 
