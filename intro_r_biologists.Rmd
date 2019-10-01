@@ -78,6 +78,8 @@ To see what any function in R does, type a `?` before the name and help informat
 ?install.packages
 ```
 
+> #### Tab completion
+> A very useful feature is Tab completion. You can start typing and use <kbd>Tab</kbd> to autocomplete code, for example, a function name. 
 
 ## Common R errors
 
@@ -151,8 +153,9 @@ counts <- read_csv("data/GSE60450_GeneLevel_Normalized(CPM.and.TMM)_data.csv")
 
 # read in metadata
 sampleinfo <- read_csv("data/GSE60450_filtered_metadata.csv")
-
 ```
+
+There is some information output by read_csv on "column specification". It tells us that there is a missing header and it has been filled with the name "X1". It also tells us what data types read_csv is detecting in each column. Columns with text charactershave been detected (col_character) and also columns with numbers (col_double). We won't get into the details of data types in this tutorial but they are important to learn about at some stage and you can read more about them in the [R for Data Science book](https://r4ds.had.co.nz/vectors.html#important-types-of-atomic-vector).
 
 In R we use `<-` to assign values to objects. `<-` is the **assignment operator**.  It assigns values on the right to objects on the left. So to create an object, we need to give it a name (e.g. `counts`), followed by the assignment operator `<-`, and the value we want to give it. We can give an object almost any name we want but there are some rules and conventions as described [here](https://datacarpentry.org/R-genomics/01-intro-to-R.html#notes_on_objects)
 
@@ -347,7 +350,7 @@ Colour the plots by other variables (columns) in the metadata file:
 
 1. characteristics
 2. immunophenotype
-3. `developmental stage` (Check what happens if you don't use backticks)
+3. ``developmental stage`` (Check what happens if you don't use backticks)
 
 
 # Make subplots for each gene
@@ -379,7 +382,8 @@ We can make plots for a set of genes.
 mygenes <- c("Csn1s2a", "Csn1s1", "Csn2", "Glycam1", "COX1", "Trf", "Wap", "Eef1a1")
 ```
 
-> We could specify any genes in the data to plot. These genes were the 8 genes with the highest counts summed across all samples, obtained using the command below.  
+> #### Note on specifying genes
+> This example is to demonstrate how we could specify any genes in the data to plot. The genes used here were the 8 genes with the highest counts summed across all samples. The command for how to get the gene symbols for these 8 genes is shown below.  
 >allinfo %>%  
 >  group_by(gene_symbol) %>%  
 >  summarise(Total_count=sum(Count)) %>%  
@@ -516,7 +520,7 @@ ggplot(data=mygenes_counts, mapping=aes(x=Group, y=Count, colour=Group)) +
         panel.grid.minor = element_blank())
 ```
 
-## Saving plots
+# Saving plots
 We can save plots interactively by clicking Export in the Plots window. Or we can output plots to pdf using `pdf()` followed by `dev.off()`. We put our plot code after the call to `pdf()` and before closing the plot device with `dev.off()`.
 
 Let's save our last plot.
@@ -533,6 +537,13 @@ ggplot(data=mygenes_counts, mapping=aes(x=Group, y=Count, colour=Group)) +
         panel.grid.minor = element_blank())
 dev.off()
 ```
+
+
+# Exercises
+1. Download the raw counts for this dataset
+  a. Make a boxplot. Do the samples look any different to the normalised counts?
+  b. Make subplots for the same set of 8 genes. Do they look any different to the normalised counts?
+2. Download the normalised counts for the GSE63310 dataset from GREIN. Make boxplots colouring the samples using different columns in the metadata file.
 
 
 # Key Points
