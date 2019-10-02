@@ -31,7 +31,7 @@ There are two ways to work in RStudio in the console or in a script. We can type
 1 + 1
 ```
 
-Or we can use an R script. To create a script, from the top menu in RStudio: `File > New File > R Script`. Now type the command below in the script. This time, to run the command, you use `Ctrl` + `Enter` for Windows/Linux or `Cmd` + `Enter` for MacOS. This sends the commmand where the cursor is from the script to the console. You can highlight multiple commands and then press `Cmd/Ctrl` + `Enter` to run them one after the other.
+Or we can use an R script. To create a script, from the top menu in RStudio: `File > New File > R Script`. Now type the command below in the script. This time, to run the command, you use `Ctrl` + `Enter` for Windows/Linux or `Cmd` + `Enter` for MacOS. This sends the command where the cursor is from the script to the console. You can highlight multiple commands and then press `Cmd/Ctrl` + `Enter` to run them one after the other.
 
 ```{r}
 2 + 2
@@ -66,7 +66,7 @@ Save the script you created in the previous section as `intro.R` in this directo
 
 ## Packages
 
-If it's not already installed on your computer, you can use the `install.packages` **function** to install a **package**.
+If it's not already installed on your computer, you can use the `install.packages` **function** to install a **package**. A package is a collection of functions along with documentation, code, tests and example data.
 
 ```{r, eval=FALSE}
 install.packages("tidyverse")
@@ -76,7 +76,7 @@ We will see many functions in this tutorial. Functions are "canned scripts" that
 
 ## Getting help
 
-To see what any function in R does, type a `?` before the name and help information will appear in the Help panel on the right in RStudio. Or you can search the function name in the Help panel search box. Google and Stack Overflow are also useful resources for getting help.
+To see what any function in R does, type a `?` before the name and help information will appear in the Help panel on the right in RStudio. Or you can search the function name in the Help panel search box. Google and [Stack Overflow](https://stackoverflow.com/) are also useful resources for getting help.
 
 ```{r, eval=FALSE}
 ?install.packages
@@ -101,7 +101,7 @@ To see examples of some R error messages with explanations see [here]( https://g
 
 
 ## Data files
-The data files required for this workshop are available on [GitHub](https://github.com/mblue9/r-intro-biologists/blob/master/data.zip). To download the data.zip file, click the 'Download' button that's in the middle of the page. Unzip the file and store this `data` folder in your working directory.
+The data files required for this workshop are available on [GitHub](https://github.com/mblue9/r-intro-biologists/blob/master/data.zip). To download the data.zip file, you can click [here](https://github.com/mblue9/r-intro-biologists/raw/master/data.zip). Unzip the file and store this `data` folder in your working directory.
 
 
 ## GREIN (GEO RNA-seq Experiments Interactive Navigator) 
@@ -118,7 +118,7 @@ Here we will create some plots using RNA-seq data from the paper by [Fu et al. 2
 
 ![www.tidyverse.org](images/tidyverse.png){width=100% }
 
-The **tidyverse** is a collection of R packages that includes the extremely widely used **`ggplot2`**. 
+In this course we will use the **tidyverse**. The tidyverse is a collection of R packages that includes the extremely widely used **`ggplot2`** package.
 
 \  
 \  
@@ -139,13 +139,13 @@ The **tidyverse** is a collection of R packages that includes the extremely wide
 
 ## Loading the data
 
-We use `library()` to load in the packages that we need.
+We use `library()` to load in the packages that we need. As described in the cooking analogy in the first screenshot, `install.packages()` is like buying a saucepan, `library()` is taking it out of the cupboard to use it.
 
 ```{r, message=FALSE}
 library(tidyverse)
 ```
 
-The file we will use is a csv comma-separated file, so we will use the `read_csv()` function from the tidyverse. There is also a `read_tsv()` function for tab-separated values.
+The files we will use are csv comma-separated, so we will use the `read_csv()` function from the tidyverse. There is also a `read_tsv()` function for tab-separated values.
 
 We will use the counts file called `GSE60450_GeneLevel_Normalized(CPM.and.TMM)_data.csv` that's in a folder called `data` i.e. the path to the file should be `data/GSE60450_GeneLevel_Normalized(CPM.and.TMM)_data.csv`.
 
@@ -244,39 +244,49 @@ summary(counts)
 
 # Formatting the data
 
-We will first convert the data from wide format into long format to make it easier to work with and plot with ggplot.
+We will first convert the data from wide format into long format to make it easier to work with and plot with ggplot. We want just one column containing all the expression values instead of multiple columns with counts for each sample, as shown in the image below.
 
 ![](images/reshape_data.png)
+
+We can use `gather()` to easily change the format into long format.
 
 ```{r}
 seqdata <- gather(counts, key = Sample, value = Count, starts_with("GSM"))
 ```
+
+We use `starts_with("GSM")` to tell gather we want to reformat the columns whose names start with GSM. gather() will then reformat the specified columns into two new columns, “key” and “value”. The “key” column will contain the column names, and the “value” column will contain the column values. We tell gather what we want the new key and value columns to be called. We will give the key column the name “Sample” and the value column the name “Count”. 
 
 Let's have a look at the data.
 ```{r}
 seqdata
 ```
 
+Now that we've got just one column containing sample ids in both our counts file and our metadata files we can join them together using the sample ids.
+
 ![](images/join_data.png)
 
-Here we see the function `c()` for the first time. We use this function extremely often in R when we have multiple items that we are *combining*. We will see it again in this tutorial.
+We will use the function `full_join()` and give it the two tables we want to join. We add `by = c("Sample" = "X1")` to say we want to join on the column called "Sample"" in the first table (`seqdata`) and the column called "X1" in the second table (`sampleinfo`)
 
 ```{r}
 allinfo <- full_join(seqdata, sampleinfo, by = c("Sample" = "X1"))
 ```
+
+Here we see the function `c()` for the first time. We use this function extremely often in R when we have multiple items that we are *combining*. We will see it again in this tutorial.
 
 Let's have a look at the data.
 ```{r}
 allinfo
 ```
 
+The two tables have been joined.
+
 # Plotting with **`ggplot2`**
 
 **`ggplot2`** is a plotting package that makes it simple to create complex plots. One really great benefit of ggplot2 versus the older base R plotting is that we only need to make minimal changes if the underlying data change or if we decide to change our plot type, for example, from a box plot to a violin plot. This helps in creating publication quality plots with minimal amounts of adjustments and tweaking.
 
-**`ggplot2`** likes data in the 'long' format, i.e., a column for every variable, and a row for every observation, similar to what we created with `gather()`. Well-structured data will save you lots of time when making figures with **`ggplot2`**. We will discuss tidy data more later in the course.
+**`ggplot2`** likes data in the 'long' format, i.e., a column for every variable, and a row for every observation, similar to what we created with `gather()`. Well-structured data will save you lots of time when making figures with **`ggplot2`**.
 
-ggplot graphics are built step by step by adding new elements. Adding layers in this fashion allows for extensive flexibility and customization of plots.
+As we shall see, ggplot graphics are built step by step by adding new elements using the `+`. Adding layers in this fashion allows for extensive flexibility and customization of plots.
 
 To build a ggplot, we use the following basic template that can be used for different types of plots. Three things are required for a ggplot:
 
@@ -286,7 +296,7 @@ To build a ggplot, we use the following basic template that can be used for diff
 2. The columns in the data we want to map to visual properties (called aesthetics or aes in ggplot2) e.g. the columns for x values, y values and colours
 3. The type of plot (the geom_)
 
-There are different geoms we can use to create different types of plot e.g. `geom_line()` `geom_point()`, `geom_boxplot()`. To see the geoms available see the ggplot2 help or the handy [ggplot2 cheatsheet](https://github.com/rstudio/cheatsheets/raw/master/data-visualization-2.1.pdf). 
+There are different geoms we can use to create different types of plot e.g. `geom_line()` `geom_point()`, `geom_boxplot()`. To see the geoms available take a look at the ggplot2 help or the handy [ggplot2 cheatsheet](https://github.com/rstudio/cheatsheets/raw/master/data-visualization-2.1.pdf). Or if you type "geom" in RStudio, RStudio will show you the different types of geoms you can use.
 
 We can make boxplots to visualise the distribution of the counts for each sample. This helps us to compare the samples and check if any look unusual.
 
@@ -297,7 +307,7 @@ ggplot(data = allinfo, mapping = aes(x = Sample, y = Count)) +
 
 We have generated our first plot!
 
-But it looks a bit weird. It's because we have some genes with extremely high counts. To make it easier to visualise the distributions we usually plot the logarithm of RNA-seq counts. We'll plot the Sample on the X axis and log~ 2~  Counts on the y axis. We can log the Counts within the `aes()`. (The sample labels are also overlapping each other, we will show how to fix this later)
+But it looks a bit weird. It's because we have some genes with extremely high counts. To make it easier to visualise the distributions we usually plot the logarithm of RNA-seq counts. We'll plot the Sample on the X axis and log~ 2~  Counts on the y axis. We can log the Counts within the `aes()`. The sample labels are also overlapping each other, we will show how to fix this later.
 
 ```{r}
 ggplot(data = allinfo, mapping = aes(x = Sample, y = log2(Count))) + 
@@ -316,13 +326,13 @@ The box plots show that the distributions of the samples are not identical but t
 Box plots are useful summaries, but hide the shape of the distribution. For example, if the distribution is bimodal, we would not see it in a boxplot. An alternative to the boxplot is the **violin plot**, where the shape (of the density of points) is drawn. See here for an example of how differences in distribution may be hidden in box plots but revealed with violin plots. We could also make jitter plots. A **jitter plot** is similar to a scatter plot. It adds a small amount of random variation to the location of each point so they don’t overlap. There are too many points in this case for the jitter plots to be useful but this is just to demonstrate, as [jitter with and without boxplot](https://simplystatistics.org/2019/02/21/dynamite-plots-must-die/) is a commonly used ggplot type. We will also make use of jitter plots later.
 
 #### Exercise 
-You can easily make different types of plots with ggplot by using different geoms. If you type "geom" in RStudio, RStudio will show you the different types of geoms you can use. Using the same data (same x and y values), try editing the code above to make the plots listed in 1. 2. and 3.
+You can easily make different types of plots with ggplot by using different geoms. Using the same data (same x and y values), try editing the code above to make the plots listed in 1. 2. and 3.
 
 1. Make a violin plot (geom_violin)
 2. Make a jitter plot (geom_jitter)
 3. Make a boxplot with a jitter plot overlaid (Hint: you can add multiple geoms with + )
 
-What if we would like to add some colour to the plot, for example, a different colour bar for each sample. 
+What if we would like to add some colour to the plot, for example, a different colour for each sample. 
 
 If we look at the `geom_boxplot` help we can see under the heading called "Aesthetics" that there's an option for colour. Let's try adding that to our plot. We'll specify we want to map the Sample column to `colour = `. As we are mapping colour to a column in our data we need to put this inside the `aes()`.
 
@@ -383,17 +393,16 @@ mygenes <- c("Csn1s2a", "Csn1s1", "Csn2", "Glycam1", "COX1", "Trf", "Wap", "Eef1
 > This example is to demonstrate how we could specify any genes in the data to plot. The genes used here were the 8 genes with the highest counts summed across all samples. The command for how to get the gene symbols for these 8 genes is shown below.  
 >allinfo %>%  
 >  group_by(gene_symbol) %>%  
->  summarise(Total_count=sum(Count)) %>%  
->  arrange(desc(Total_count)) %>% 
->  head(n=8) %>% 
+>  summarise(Total_count = sum(Count)) %>%  
+>  arrange(desc(Total_count)) %>%  
+>  head(n = 8) %>%  
 >  pull(gene_symbol) 
 
-We filter our data for just these genes of interest.
+We filter our data for just these genes of interest. We use %in% to check if a value is in a set of values.
 
 ```{r}
 mygenes_counts <- filter(allinfo, gene_symbol %in% mygenes)
 ```
-
 
 We can make boxplots for just these genes. We *facet* on the `gene_symbol` column using `facet_wrap()`. We add the tilde symbol `~ ` in front of the column we want to facet on. 
 
@@ -403,15 +412,15 @@ ggplot(data = mygenes_counts, mapping = aes(x = Group, y = log2(Count), fill = G
   facet_wrap(~ gene_symbol)
 ```
 
-Here we only have two values per group so we could just plot the individual points. We could use 
-`geom_point` to make a scatterplot.
+The boxplots don't look good as we only have two values per group. We could just plot the individual points instead. We could use 
+`geom_point()` to make a scatterplot.
 ```{r}
 ggplot(data = mygenes_counts, mapping = aes(x = Group, y = Count)) +
   geom_point() +
   facet_wrap(~ gene_symbol)
 ```
 
-The points are overlapping so we will use `geom_jitter` which adds a small amount of random variation.
+The points are overlapping so we will use `geom_jitter()` which adds a small amount of random variation to the points.
 
 ```{r}
 ggplot(data = mygenes_counts, mapping = aes(x = Group, y = Count)) +
@@ -436,7 +445,7 @@ We might want to change the colours. To see what colour names are available you 
 mycolours <- c("turquoise", "plum", "tomato", "violet", "steelblue", "chocolate")
 ```
 
-Then we then add these colours to the plot using a `+` and `scale_colour_manual(values=mycolours)`.
+Then we then add these colours to the plot using a `+` and `scale_colour_manual(values = mycolours)`.
 
 ```{r}
 ggplot(data = mygenes_counts, mapping = aes(x = Group, y = Count, colour = Group)) +
@@ -466,12 +475,12 @@ We can change the axis labels and add a title with `labs()`. To change the x axi
 ggplot(data = mygenes_counts, mapping = aes(x = Group, y = Count, colour = Group)) +
   geom_jitter() +
   facet_wrap(~ gene_symbol) + 
-  labs(x = "Cell type and stage", y = "Count", title="Mammary gland RNA-seq data")
+  labs(x = "Cell type and stage", y = "Count", title = "Mammary gland RNA-seq data")
 ```
 
 ### Themes
 
-We can adjust the text on the x axis (the group labels by turning them 90 degrees so we can read the labels better.
+We can adjust the text on the x axis (the group labels) by turning them 90 degrees so we can read the labels better.
 ```{r}
 ggplot(data = mygenes_counts, mapping = aes(x = Group, y = Count, colour = Group)) +
   geom_jitter() +
@@ -482,7 +491,7 @@ ggplot(data = mygenes_counts, mapping = aes(x = Group, y = Count, colour = Group
 
 We can remove the grey background and grid lines. To do this we modify the ggplot theme. Themes are the non-data parts of the plot. 
 
-There are also a lot of built-in themes. Let's have a look at a couple of the more widely used themes. We won't save these (we won't use `p <-`) we'll just print them to have a look. The default ggplot theme is `theme_grey().`
+There are also a lot of built-in themes. Let's have a look at a couple of the more widely used themes. The default ggplot theme is `theme_grey().`
 
 ```{r}
 ggplot(data = mygenes_counts, mapping = aes(x = Group, y = Count, colour = Group)) +
@@ -530,14 +539,11 @@ Next we need to make a column with the groups into an R data type called a **fac
 
 We'll add another column called "Group_f" where we'll make the Group column into a factor and specify what order we want the levels of the factor.
 
-
 ```{r}
 mygenes_counts <- mutate(mygenes_counts, Group_f = factor(Group, levels = group_order))
 ```
 
-
-
-Take a look by typing `mygenes_counts`.
+Take a look at the data.
 
 ```{r}
 mygenes_counts
@@ -569,7 +575,7 @@ ggplot(data = mygenes_counts, mapping = aes(x = Group_f, y = Count, colour = Gro
         panel.grid.major = element_blank(), 
         panel.grid.minor = element_blank())
 ```
-We could do the similar if we wanted to have the genes in the facets in a different order. For example, we could add another column called "gene_symbol_f" where we make the gene_symbol column into a factor, specifying the order of the levels.
+We could do similar if we wanted to have the genes in the facets in a different order. For example, we could add another column called "gene_symbol_f" where we make the gene_symbol column into a factor, specifying the order of the levels.
 
 # Saving plots
 We can save plots interactively by clicking Export in the Plots window. Or we can output plots to pdf using `pdf()` followed by `dev.off()`. We put our plot code after the call to `pdf()` and before closing the plot device with `dev.off()`.
