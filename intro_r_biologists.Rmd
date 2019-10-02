@@ -85,7 +85,7 @@ To see what any function in R does, type a `?` before the name and help informat
 
 R error messages are common and can sometimes be cryptic. You most likely will encounter at least one error message during this tutorial. Some common reasons for errors are:
 
-- Case sensitivity - In R, as in other programming languages, case sensitivity is important. ?install.packages is different to ?Install.packages.
+- Case sensitivity. In R, as in other programming languages, case sensitivity is important. ?install.packages is different to ?Install.packages.
 - Missing commas
 - Mismatched parentheses or brackets
 - Not quoting file paths
@@ -155,9 +155,9 @@ counts <- read_csv("data/GSE60450_GeneLevel_Normalized(CPM.and.TMM)_data.csv")
 sampleinfo <- read_csv("data/GSE60450_filtered_metadata.csv")
 ```
 
-There is some information output by read_csv on "column specification". It tells us that there is a missing header and it has been filled with the name "X1". It also tells us what data types read_csv is detecting in each column. Columns with text charactershave been detected (col_character) and also columns with numbers (col_double). We won't get into the details of data types in this tutorial but they are important to learn about at some stage and you can read more about them in the [R for Data Science book](https://r4ds.had.co.nz/vectors.html#important-types-of-atomic-vector).
+There is some information output by read_csv on "column specification". It tells us that there is a missing header and it has been filled with the name "X1". It also tells us what data types read_csv is detecting in each column. Columns with text charactershave been detected (col_character) and also columns with numbers (col_double). We won't get into the details of data types in this tutorial but they are important to know and you can read more about them in the [R for Data Science book](https://r4ds.had.co.nz/vectors.html#important-types-of-atomic-vector).
 
-In R we use `<-` to assign values to objects. `<-` is the **assignment operator**.  It assigns values on the right to objects on the left. So to create an object, we need to give it a name (e.g. `counts`), followed by the assignment operator `<-`, and the value we want to give it. We can give an object almost any name we want but there are some rules and conventions as described [here](https://datacarpentry.org/R-genomics/01-intro-to-R.html#notes_on_objects)
+In R we use `<-` to assign values to objects. `<-` is the **assignment operator**.  It assigns values on the right to objects on the left. So to create an object, we need to give it a name (e.g. `counts`), followed by the assignment operator `<-`, and the value we want to give it. We can give an object almost any name we want but there are some rules and conventions as described in the [tidyverse R style guide](https://style.tidyverse.org/syntax.html#object-names)
 
 We can read in a file from a path on our computer on on the web and use this as the value. Note that we need to put quotes ("") around file paths.
 
@@ -166,7 +166,6 @@ We can read in a file from a path on our computer on on the web and use this as 
 > same time as the <kbd>-</kbd> key) will write ` <- ` in a single keystroke in a PC, while typing > <kbd>Option</kbd> + <kbd>-</kbd> (push <kbd>Option</kbd> at the
 > same time as the <kbd>-</kbd> key) does the same in a Mac. 
 
-The value of `counts` is the contents of the counts file. There is some information output by `read_tsv` on column specifications, this is the data type that `read_tsv` has guessed is contained in each column, we will discuss this more later. 
 
 ## Getting to know the data
 
@@ -246,7 +245,7 @@ We will first convert the data from wide format into long format to make it easi
 ![](images/reshape_data.png)
 
 ```{r}
-seqdata <- gather(counts, key=Sample, value=Count, starts_with("GSM"))
+seqdata <- gather(counts, key = Sample, value = Count, starts_with("GSM"))
 ```
 
 Let's have a look at the data.
@@ -288,23 +287,23 @@ There are different geoms we can use to create different types of plot e.g. bar 
 We can make boxplots to visualise the distribution of the counts for each sample. This helps us to compare the samples and check if any look unusual.
 
 ```{r}
-ggplot(data=allinfo, mapping=aes(x=Sample, y=Count)) + 
+ggplot(data = allinfo, mapping = aes(x = Sample, y = Count)) + 
   geom_boxplot()
 ```
 
 We have generated our first plot!
 
-But it looks a bit weird. It's because we have some genes with extremely high counts. To make it easier to visualise the distributions we usually plot the logarithm of RNA-seq counts. We'll plot the Sample on the X axis and log~2~ Counts on the y axis. We can log the Counts within the `aes()`. (The sample labels are also overlapping each other, we will show how to fix this later)
+But it looks a bit weird. It's because we have some genes with extremely high counts. To make it easier to visualise the distributions we usually plot the logarithm of RNA-seq counts. We'll plot the Sample on the X axis and log~ 2~  Counts on the y axis. We can log the Counts within the `aes()`. (The sample labels are also overlapping each other, we will show how to fix this later)
 
 ```{r}
-ggplot(data=allinfo, mapping=aes(x=Sample, y=log2(Count))) + 
+ggplot(data = allinfo, mapping = aes(x = Sample, y = log2(Count))) + 
   geom_boxplot()
 ```
 
 Note that we get a warning here about rows containing non-finite values being removed. This is because some of the genes have a count of zero in the samples and a log of zero is undefined. We can add a small number to every count to avoid the zeros being dropped.
 
 ```{r}
-ggplot(data=allinfo, mapping=aes(x=Sample, y=log2(Count + 1))) + 
+ggplot(data = allinfo, mapping = aes(x = Sample, y = log2(Count + 1))) + 
   geom_boxplot()
 ```
 
@@ -316,7 +315,7 @@ Box plots are useful summaries, but hide the shape of the distribution. For exam
 You can easily make different types of plots with ggplot by using different geoms. If you type "geom" in RStudio, RStudio will show you the different types of geoms you can use. Using the same data (same x and y values), try editing the code below to make the plots listed in 1. 2. and 3.
 
 ```{r}
-ggplot(data=allinfo, mapping=aes(x=Sample, y=log2(Count + 1), colour=Sample)) + 
+ggplot(data = allinfo, mapping = aes(x = Sample, y = log2(Count + 1), colour = Sample)) + 
   geom_boxplot()
 ```
 
@@ -327,23 +326,23 @@ ggplot(data=allinfo, mapping=aes(x=Sample, y=log2(Count + 1), colour=Sample)) +
 
 What if we would like to add some colour to the plot, for example, a different colour bar for each sample. 
 
-If we look at the `geom_boxplot` help we can see under the heading called "Aesthetics" that there's an option for colour. Let's try adding that to our plot. We'll specify we want to map the Sample column to `colour=`. As we are mapping colour to a column in our data we need to put this inside the `aes()`.
+If we look at the `geom_boxplot` help we can see under the heading called "Aesthetics" that there's an option for colour. Let's try adding that to our plot. We'll specify we want to map the Sample column to `colour = `. As we are mapping colour to a column in our data we need to put this inside the `aes()`.
 
 ```{r}
-ggplot(data=allinfo, mapping=aes(x=Sample, y=log2(Count + 1), colour=Sample)) + 
+ggplot(data = allinfo, mapping = aes(x = Sample, y = log2(Count + 1), colour = Sample)) + 
   geom_boxplot()
 ```
 
-Hmm colouring the edges wasn’t quite what we had in mind. Look at the help for `geom_boxplot` to see what other aesthetic we could use. Let's try `fill=` instead.
+Hmm colouring the edges wasn’t quite what we had in mind. Look at the help for `geom_boxplot` to see what other aesthetic we could use. Let's try `fill = ` instead.
 
 ```{r}
-ggplot(data=allinfo, mapping=aes(x=Sample, y=log2(Count + 1), fill=Sample)) + 
+ggplot(data = allinfo, mapping = aes(x = Sample, y = log2(Count + 1), fill = Sample)) + 
   geom_boxplot()
 ```
 
-That looks better. `fill=` is used to **fill** in areas in ggplot2 plots, whereas `colour=` is used to colour lines and points.
+That looks better. `fill = ` is used to **fill** in areas in ggplot2 plots, whereas `colour = ` is used to colour lines and points.
 
-A really nice feature about ggplot is that we can easily colour by another variable e.g. cell type (basal vs luminal) by simply changing the column we give to `fill=`.
+A really nice feature about ggplot is that we can easily colour by another variable e.g. cell type (basal vs luminal) by simply changing the column we give to `fill = `.
 
 #### Exercise 
 Colour the plots by other variables (columns) in the metadata file:
@@ -360,13 +359,13 @@ With ggplot we can easily make subplots using *faceting*. For example we can mak
 First we'll use `mutate()` to add a column with shorter group names to use in the plot, as the group names in the characteristics column are quite long.
 
 ```{r}
- allinfo <- mutate(allinfo, Group=case_when(                                        
-        str_detect(characteristics, "basal.*virgin") ~ "bvirg",
-        str_detect(characteristics, "basal.*preg")  ~ "bpreg",
-        str_detect(characteristics, "basal.*lact")  ~ "blact",
-        str_detect(characteristics, "luminal.*virgin")  ~ "lvirg",
-        str_detect(characteristics, "luminal.*preg")  ~ "lpreg",
-        str_detect(characteristics, "luminal.*lact")  ~ "llact"
+ allinfo <- mutate(allinfo, Group = case_when(                                        
+        str_detect(characteristics, "basal.*virgin") ~  "bvirg",
+        str_detect(characteristics, "basal.*preg")  ~  "bpreg",
+        str_detect(characteristics, "basal.*lact")  ~  "blact",
+        str_detect(characteristics, "luminal.*virgin")  ~  "lvirg",
+        str_detect(characteristics, "luminal.*preg")  ~  "lpreg",
+        str_detect(characteristics, "luminal.*lact")  ~  "llact"
        ))
 ```
 
@@ -398,43 +397,43 @@ mygenes_counts <- filter(allinfo, gene_symbol %in% mygenes)
 ```
 
 
-We can make boxplots for just these genes. We *facet* on the `gene_symbol` column using `facet_wrap()`. We add the tilde symbol `~` in front of the column we want to facet on. 
+We can make boxplots for just these genes. We *facet* on the `gene_symbol` column using `facet_wrap()`. We add the tilde symbol `~ ` in front of the column we want to facet on. 
 
 ```{r}
-ggplot(data=mygenes_counts, mapping=aes(x=Group, y=log2(Count), fill=Group)) +
+ggplot(data = mygenes_counts, mapping = aes(x = Group, y = log2(Count), fill = Group)) +
   geom_boxplot() +
-  facet_wrap(~gene_symbol)
+  facet_wrap(~ gene_symbol)
 ```
 
 Here we only have two values per group so we could just plot the individual points. We could use 
 `geom_point` to make a scatterplot.
 ```{r}
-ggplot(data=mygenes_counts, mapping=aes(x=Group, y=Count)) +
+ggplot(data = mygenes_counts, mapping = aes(x = Group, y = Count)) +
   geom_point() +
-  facet_wrap(~gene_symbol)
+  facet_wrap(~ gene_symbol)
 ```
 
 The points are overlapping so we will use `geom_jitter` which adds a small amount of random variation.
 
 ```{r}
-ggplot(data=mygenes_counts, mapping=aes(x=Group, y=Count)) +
+ggplot(data = mygenes_counts, mapping = aes(x = Group, y = Count)) +
   geom_jitter() +
-  facet_wrap(~gene_symbol)
+  facet_wrap(~ gene_symbol)
 ```
 
-We can colour the groups similar to before using `colour=`.
+We can colour the groups similar to before using `colour = `.
 
 ```{r}
-ggplot(data=mygenes_counts, mapping=aes(x=Group, y=Count, colour=Group)) +
+ggplot(data = mygenes_counts, mapping = aes(x = Group, y = Count, colour = Group)) +
   geom_jitter() +
-  facet_wrap(~gene_symbol) 
+  facet_wrap(~ gene_symbol) 
 ```
 
 # Modifying the plot
 
 ### Specifying colours
 
-We might want to change the colours. To see what colour names are available you can type `colours()`. There is also an [R colours cheatsheet](https://www.nceas.ucsb.edu/~frazier/RSpatialGuides/colorPaletteCheatsheet.pdf) that shows what the colours look like.
+We might want to change the colours. To see what colour names are available you can type `colours()`. There is also an [R colours cheatsheet](https://www.nceas.ucsb.edu/~ frazier/RSpatialGuides/colorPaletteCheatsheet.pdf) that shows what the colours look like.
 ```{r}
 mycolours <- c("turquoise", "plum", "tomato", "violet", "steelblue", "chocolate")
 ```
@@ -442,18 +441,18 @@ mycolours <- c("turquoise", "plum", "tomato", "violet", "steelblue", "chocolate"
 Then we then add these colours to the plot using a `+` and `scale_colour_manual(values=mycolours)`.
 
 ```{r}
-ggplot(data=mygenes_counts, mapping=aes(x=Group, y=Count, colour=Group)) +
+ggplot(data = mygenes_counts, mapping = aes(x = Group, y = Count, colour = Group)) +
   geom_jitter() +
-  facet_wrap(~gene_symbol) +
-  scale_colour_manual(values=mycolours)
+  facet_wrap(~ gene_symbol) +
+  scale_colour_manual(values = mycolours)
 ```
 
-There are built-in colour palettes that can be handy to use, where the sets of colours are predefined. `scale_colour_brewer()` is a popular one (there is also `scale_fill_brewer()`). You can take a look at the help for `scale_colour_brewer()` to see what palettes are available. The [R colours cheatsheet](https://www.nceas.ucsb.edu/~frazier/RSpatialGuides/colorPaletteCheatsheet.pdf) also shows what the colours of the palettes look like. There's one called "Dark2", let's have a look at that. 
+There are built-in colour palettes that can be handy to use, where the sets of colours are predefined. `scale_colour_brewer()` is a popular one (there is also `scale_fill_brewer()`). You can take a look at the help for `scale_colour_brewer()` to see what palettes are available. The [R colours cheatsheet](https://www.nceas.ucsb.edu/~ frazier/RSpatialGuides/colorPaletteCheatsheet.pdf) also shows what the colours of the palettes look like. There's one called "Dark2", let's have a look at that. 
 
 ```{r}
-ggplot(data=mygenes_counts, mapping=aes(x=Group, y=Count, colour=Group)) +
+ggplot(data = mygenes_counts, mapping = aes(x = Group, y = Count, colour = Group)) +
   geom_jitter() +
-  facet_wrap(~gene_symbol) +
+  facet_wrap(~ gene_symbol) +
   scale_colour_brewer(palette = "Dark2")
 ```
 
@@ -463,23 +462,23 @@ Make a colourblind friendly plot. Hint there are colourblind friendly palettes [
 
 ### Axis labels and Title
 
-We can change the axis labels and add a title with `labs()`. To change the x axis label we use `labs(x="New name")`. To change the y axis label we use `labs(y="New name")` or we can change them all at the same time.
+We can change the axis labels and add a title with `labs()`. To change the x axis label we use `labs(x = "New name")`. To change the y axis label we use `labs(y = "New name")` or we can change them all at the same time.
 
 ```{r}
-ggplot(data=mygenes_counts, mapping=aes(x=Group, y=Count, colour=Group)) +
+ggplot(data = mygenes_counts, mapping = aes(x = Group, y = Count, colour = Group)) +
   geom_jitter() +
-  facet_wrap(~gene_symbol) + 
-  labs(x="Cell type and stage", y="Count", title="Mammary gland RNA-seq data")
+  facet_wrap(~ gene_symbol) + 
+  labs(x = "Cell type and stage", y = "Count", title="Mammary gland RNA-seq data")
 ```
 
 ### Themes
 
 We can adjust the text on the x axis (the group labels by turning them 90 degrees so we can read the labels better.
 ```{r}
-ggplot(data=mygenes_counts, mapping=aes(x=Group, y=Count, colour=Group)) +
+ggplot(data = mygenes_counts, mapping = aes(x = Group, y = Count, colour = Group)) +
   geom_jitter() +
-  facet_wrap(~gene_symbol) + 
-  labs(x="Cell type and stage", y="Count", title="Mammary gland RNA-seq data") +
+  facet_wrap(~ gene_symbol) + 
+  labs(x = "Cell type and stage", y = "Count", title = "Mammary gland RNA-seq data") +
   theme(axis.text.x = element_text(angle = 90))
 ```
 
@@ -488,19 +487,19 @@ We can remove the grey background and grid lines. To do this we modify the ggplo
 There are also a lot of built-in themes. Let's have a look at a couple of the more widely used themes. We won't save these (we won't use `p <-`) we'll just print them to have a look. The default ggplot theme is `theme_grey().`
 
 ```{r}
-ggplot(data=mygenes_counts, mapping=aes(x=Group, y=Count, colour=Group)) +
+ggplot(data = mygenes_counts, mapping = aes(x = Group, y = Count, colour = Group)) +
   geom_jitter() +
-  facet_wrap(~gene_symbol) + 
-  labs(x="Cell type and stage", y="Count", title="Mammary gland RNA-seq data") +
+  facet_wrap(~ gene_symbol) + 
+  labs(x = "Cell type and stage", y = "Count", title = "Mammary gland RNA-seq data") +
   theme(axis.text.x = element_text(angle = 90)) + 
   theme_bw()
 ```
 
 ```{r}
-ggplot(data=mygenes_counts, mapping=aes(x=Group, y=Count, colour=Group)) +
+ggplot(data = mygenes_counts, mapping = aes(x = Group, y = Count, colour = Group)) +
   geom_jitter() +
-  facet_wrap(~gene_symbol) + 
-  labs(x="Cell type and stage", y="Count", title="Mammary gland RNA-seq data") +
+  facet_wrap(~ gene_symbol) + 
+  labs(x = "Cell type and stage", y = "Count", title = "Mammary gland RNA-seq data") +
   theme(axis.text.x = element_text(angle = 90)) + 
   theme_minimal()
 ```
@@ -510,10 +509,10 @@ There are many themes available, you can see some in the [R graph gallery](https
 We can also modify parts of the theme individually. We can remove the grey background and grid lines with the code below.
 
 ```{r}
-ggplot(data=mygenes_counts, mapping=aes(x=Group, y=Count, colour=Group)) +
+ggplot(data = mygenes_counts, mapping = aes(x = Group, y = Count, colour = Group)) +
   geom_jitter() +
-  facet_wrap(~gene_symbol) + 
-  labs(x="Cell type and stage", y="Count", title="Mammary gland RNA-seq data") +
+  facet_wrap(~ gene_symbol) + 
+  labs(x = "Cell type and stage", y = "Count", title = "Mammary gland RNA-seq data") +
   theme(axis.text.x = element_text(angle = 90)) + 
   theme(panel.background = element_blank(), 
         panel.grid.major = element_blank(), 
@@ -535,7 +534,7 @@ We'll add another column called "Group_f" where we'll make the Group column into
 
 
 ```{r}
-mygenes_counts <- mutate(mygenes_counts, Group_f=factor(Group, levels=group_order))
+mygenes_counts <- mutate(mygenes_counts, Group_f = factor(Group, levels = group_order))
 ```
 
 
@@ -560,13 +559,13 @@ We can check the factor levels of a column as below.
 levels(mygenes_counts$Group_f)
 ```
 
-The levels are in the order that we want, so we can now change our plot to use the "Group_f" column instead of Group column (change `x=` and `colour=`).
+The levels are in the order that we want, so we can now change our plot to use the "Group_f" column instead of Group column (change `x = ` and `colour = `).
 
 ```{r}
-ggplot(data=mygenes_counts, mapping=aes(x=Group_f, y=Count, colour=Group_f)) +
+ggplot(data = mygenes_counts, mapping = aes(x = Group_f, y = Count, colour = Group_f)) +
   geom_jitter() +
-  facet_wrap(~gene_symbol) + 
-  labs(x="Cell type and stage", y="Count", title="Mammary gland RNA-seq data") +
+  facet_wrap(~ gene_symbol) + 
+  labs(x = "Cell type and stage", y = "Count", title = "Mammary gland RNA-seq data") +
   theme(axis.text.x = element_text(angle = 90)) + 
   theme(panel.background = element_blank(), 
         panel.grid.major = element_blank(), 
@@ -581,10 +580,10 @@ Let's save our last plot.
 
 ```{r, eval=FALSE}
 pdf("myplot.pdf")
-ggplot(data=mygenes_counts, mapping=aes(x=Group_f, y=Count, colour=Group_f)) +
+ggplot(data = mygenes_counts, mapping = aes(x = Group_f, y = Count, colour = Group_f)) +
   geom_jitter() +
-  facet_wrap(~gene_symbol) + 
-  labs(x="Cell type and stage", y="Count", title="Mammary gland RNA-seq data") +
+  facet_wrap(~ gene_symbol) + 
+  labs(x = "Cell type and stage", y = "Count", title = "Mammary gland RNA-seq data") +
   theme(axis.text.x = element_text(angle = 90)) + 
   theme(panel.background = element_blank(), 
         panel.grid.major = element_blank(), 
@@ -610,7 +609,7 @@ dev.off()
 - **`ggplot2`** is a plotting package that makes it simple to create complex plots and have 3 components: data (dataset), mapping (columns to plot) and geom (type of plot).
 - The `+` sign is used to add layers. It must be placed at the end of the preceding line. If it is added at the beginning of the line, **`ggplot2`** will return an error message.
 - `facet_wrap()` can be used to make subplots
-- ggplot2 plots can be easily coloured by columns in the dataset. `fill=` can be used to colour areas and `colour=` to colour points and lines
+- ggplot2 plots can be easily coloured by columns in the dataset. `fill = ` can be used to colour areas and `colour = ` to colour points and lines
 
 
 # Further Reading
