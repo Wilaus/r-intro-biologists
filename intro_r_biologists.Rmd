@@ -520,6 +520,60 @@ ggplot(data=mygenes_counts, mapping=aes(x=Group, y=Count, colour=Group)) +
         panel.grid.minor = element_blank())
 ```
 
+### Order of groups
+
+The groups have been plotted in alphabetical order on the x axis and in the legend, however, we may want to change the order. We may prefer to plot the groups in order of stage, for example, basal virgin, basal pregnant, basal lactate, luminal virgin, luminal pregnant, luminal lactate.
+
+First let's make an object with the group order that we want.
+```{r}
+group_order <- c("bvirg", "bpreg", "blact", "lvirg", "lpreg", "llact")
+```
+
+Next we need to make a column with the groups into an R data type called a **factor**. Factors in R are a special data type used to specify categories, you can read more about them in the [R for Data Science book](https://r4ds.had.co.nz/vectors.html#augmented-vectors). The names of the categories are called the factor **levels**. 
+
+We'll add another column called "Group_f" where we'll make the Group column into a factor and specify what order we want the levels of the factor.
+
+
+```{r}
+mygenes_counts <- mutate(mygenes_counts, Group_f=factor(Group, levels=group_order))
+```
+
+
+
+Take a look by typing `mygenes_counts`.
+
+```{r}
+mygenes_counts
+```
+
+Notice that the Group column has `<chr>` under the heading, that indicates is a character data type, while the Group_f column has `<fct>` under the heading, indicating it is a factor data type. The `str()` command that we saw previously is useful to check the data types in objects.
+
+```{r}
+str(mygenes_counts)
+```
+
+`str()` shows us Group_f column is a Factor with 6 levels (categories).
+
+We can check the factor levels of a column as below.
+
+```{r}
+levels(mygenes_counts$Group_f)
+```
+
+The levels are in the order that we want, so we can now change our plot to use the "Group_f" column instead of Group column (change `x=` and `colour=`).
+
+```{r}
+ggplot(data=mygenes_counts, mapping=aes(x=Group_f, y=Count, colour=Group_f)) +
+  geom_jitter() +
+  facet_wrap(~gene_symbol) + 
+  labs(x="Cell type and stage", y="Count", title="Mammary gland RNA-seq data") +
+  theme(axis.text.x = element_text(angle = 90)) + 
+  theme(panel.background = element_blank(), 
+        panel.grid.major = element_blank(), 
+        panel.grid.minor = element_blank())
+```
+We could do the similar if we wanted to have the genes in the facets in a different order. For example, we could add another column called "gene_symbol_f" where we make the gene_symbol column into a factor, specifying the order of the levels.
+
 # Saving plots
 We can save plots interactively by clicking Export in the Plots window. Or we can output plots to pdf using `pdf()` followed by `dev.off()`. We put our plot code after the call to `pdf()` and before closing the plot device with `dev.off()`.
 
@@ -527,7 +581,7 @@ Let's save our last plot.
 
 ```{r, eval=FALSE}
 pdf("myplot.pdf")
-ggplot(data=mygenes_counts, mapping=aes(x=Group, y=Count, colour=Group)) +
+ggplot(data=mygenes_counts, mapping=aes(x=Group_f, y=Count, colour=Group_f)) +
   geom_jitter() +
   facet_wrap(~gene_symbol) + 
   labs(x="Cell type and stage", y="Count", title="Mammary gland RNA-seq data") +
