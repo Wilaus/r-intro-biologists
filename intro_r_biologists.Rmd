@@ -25,13 +25,13 @@ RStudio is an interface that makes it easier to use R. There are four windows in
 
 ## R script vs console
 
-There are two ways to work in RStudio in the console or in a script. We can type a command in the console and press `Enter/Return` to run it. Try running the command below in the console.
+There are two ways to work in RStudio in the console or in a script. We can type a command in the console and press `Enter` to run it. Try running the command below in the console.
 
 ```{r}
 1 + 1
 ```
 
-Or we can use an R script. To create a script, from the top menu in RStudio: `File > New File > R Script`. Save it as `intro.R`. Now type the command below in the script. This time you use `Cmd/Ctrl` + `Enter/Return`. This sends the commmand where the cursor is from the script to the console. You can highlight multiple commands and then press `Cmd/Ctrl` + `Enter/Return` to run them one after the other.
+Or we can use an R script. To create a script, from the top menu in RStudio: `File > New File > R Script`. Now type the command below in the script. This time, to run the command, you use `Ctrl` + `Enter` for Windows/Linux or `Cmd` + `Enter` for MacOS. This sends the commmand where the cursor is from the script to the console. You can highlight multiple commands and then press `Cmd/Ctrl` + `Enter` to run them one after the other.
 
 ```{r}
 2 + 2
@@ -45,6 +45,8 @@ We can also add comments to a script. These are notes to ourself or others about
 # testing R
 2 + 2
 ```
+
+Keeping an accurate record of how you've manipulated your data is important for [reproducible research](https://ropensci.github.io/reproducibility-guide/sections/introduction/). Writing detailed comments and documenting your work are useful reminders to your future self (and anyone else reading your scripts) on what your code does.
 
 ## Working directory
 
@@ -60,12 +62,14 @@ In the window that appears, find the folder you created (e.g. `Intro_R_course`),
 
 ![](images/working_directory.png)
 
+Save the script you created in the previous section as `intro.R` in this directory. You can do this by clikcing on `File > Save` and the default location should be the current working directory (e.g. `Intro_R_course`).
+
 ## Packages
 
 If it's not already installed on your computer, you can use the `install.packages` **function** to install a **package**.
 
 ```{r, eval=FALSE}
-install.packages('tidyverse')
+install.packages("tidyverse")
 ```
 
 We will see many functions in this tutorial. Functions are "canned scripts" that automate more complicated sets of commands. Many functions are predefined, or can be made available by importing R packages. A function usually takes one or more inputs called *arguments*. Here tidyverse is the argument to the `install.packages()` function. **Note that functions require parentheses after the function name.**
@@ -101,7 +105,7 @@ The data files required for this workshop are available on [GitHub](https://gith
 
 
 ## GREIN (GEO RNA-seq Experiments Interactive Navigator) 
-In this tutorial, we will learn some R through creating plots to visualise data from an RNA-seq experiment. RNA-seq counts file can be obtained from the [GREIN platform](https://www.nature.com/articles/s41598-019-43935-8). GREIN provides >6,500 published datasets from GEO that have been uniformly processed. It is available at http://www.ilincs.org/apps/grein/. You can search for a dataset of interest using the GEO code. We obtained the dataset used here using the code GSE60450. GREIN provide QC metrics for the RNA-seq datasets and both raw and normalized counts. We will use the normalized counts here. These are the counts of reads for each gene for each sample normalized for differences in sequencing depth and composition bias. The higher the number of counts the more the gene is expressed.
+In this tutorial, we will learn some R through creating plots to visualise data from an RNA-seq experiment. RNA-seq counts file can be obtained from the [GREIN platform](https://www.nature.com/articles/s41598-019-43935-8). GREIN provides >6,500 published datasets from GEO that have been uniformly processed. It is available at http://www.ilincs.org/apps/grein/. You can search for a dataset of interest using the GEO code. We obtained the dataset used here using the code GSE60450. GREIN provide QC metrics for the RNA-seq datasets and both raw and normalized counts. We will use the normalized counts here. These are the counts of reads for each gene for each sample normalized for differences in sequencing depth and composition bias. Generally, the higher the number of counts the more the gene is expressed.
 \  
 \ 
 
@@ -155,7 +159,7 @@ counts <- read_csv("data/GSE60450_GeneLevel_Normalized(CPM.and.TMM)_data.csv")
 sampleinfo <- read_csv("data/GSE60450_filtered_metadata.csv")
 ```
 
-There is some information output by read_csv on "column specification". It tells us that there is a missing header and it has been filled with the name "X1". It also tells us what data types read_csv is detecting in each column. Columns with text charactershave been detected (col_character) and also columns with numbers (col_double). We won't get into the details of data types in this tutorial but they are important to learn about at some stage and you can read more about them in the [R for Data Science book](https://r4ds.had.co.nz/vectors.html#important-types-of-atomic-vector).
+There is some information output by read_csv on "column specification". It tells us that there is a missing header and it has been filled with the name "X1". It also tells us what data types read_csv is detecting in each column. Columns with text characters have been detected (col_character) and also columns with numbers (col_double). We won't get into the details of data types in this tutorial but they are important to learn about at some stage and you can read more about them in the [R for Data Science book](https://r4ds.had.co.nz/vectors.html#important-types-of-atomic-vector).
 
 In R we use `<-` to assign values to objects. `<-` is the **assignment operator**.  It assigns values on the right to objects on the left. So to create an object, we need to give it a name (e.g. `counts`), followed by the assignment operator `<-`, and the value we want to give it. We can give an object almost any name we want but there are some rules and conventions as described [here](https://datacarpentry.org/R-genomics/01-intro-to-R.html#notes_on_objects)
 
@@ -315,15 +319,9 @@ Box plots are useful summaries, but hide the shape of the distribution. For exam
 #### Exercise 
 You can easily make different types of plots with ggplot by using different geoms. If you type "geom" in RStudio, RStudio will show you the different types of geoms you can use. Using the same data (same x and y values), try editing the code below to make the plots listed in 1. 2. and 3.
 
-```{r}
-ggplot(data=allinfo, mapping=aes(x=Sample, y=log2(Count + 1), colour=Sample)) + 
-  geom_boxplot()
-```
-
 1. Make a violin plot (geom_violin)
 2. Make a jitter plot (geom_jitter)
 3. Make a boxplot with a jitter plot overlaid (Hint: you can add multiple geoms with + )
-
 
 What if we would like to add some colour to the plot, for example, a different colour bar for each sample. 
 
@@ -350,7 +348,7 @@ Colour the plots by other variables (columns) in the metadata file:
 
 1. characteristics
 2. immunophenotype
-3. ``developmental stage`` (Check what happens if you don't use backticks)
+3. \`developmental stage\` (Check what happens if you don't use backticks)
 
 
 # Make subplots for each gene
