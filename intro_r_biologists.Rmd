@@ -283,10 +283,10 @@ To build a ggplot, we use the following basic template that can be used for diff
 ![](images/ggplot_template.png)
 
 1. The data
-2. The columns in the data we want to map to visual properties (called aesthetics or aes in ggplot2) e.g. the columns for x vlaues, y vales and colours
+2. The columns in the data we want to map to visual properties (called aesthetics or aes in ggplot2) e.g. the columns for x values, y values and colours
 3. The type of plot (the geom_)
 
-There are different geoms we can use to create different types of plot e.g. bar plot versus box plot, to see some of the geoms available see the ggplot2 help or the handy [ggplot2 cheatsheet](https://github.com/rstudio/cheatsheets/raw/master/data-visualization-2.1.pdf).
+There are different geoms we can use to create different types of plot e.g. `geom_line()` `geom_point()`, `geom_boxplot()`. To see the geoms available see the ggplot2 help or the handy [ggplot2 cheatsheet](https://github.com/rstudio/cheatsheets/raw/master/data-visualization-2.1.pdf). 
 
 We can make boxplots to visualise the distribution of the counts for each sample. This helps us to compare the samples and check if any look unusual.
 
@@ -331,7 +331,7 @@ ggplot(data = allinfo, mapping = aes(x = Sample, y = log2(Count + 1), colour = S
   geom_boxplot()
 ```
 
-Hmm colouring the edges wasn’t quite what we had in mind. Look at the help for `geom_boxplot` to see what other aesthetic we could use. Let's try `fill = ` instead.
+Colouring the edges wasn’t quite what we had in mind. Look at the help for `geom_boxplot` to see what other aesthetic we could use. Let's try `fill = ` instead.
 
 ```{r}
 ggplot(data = allinfo, mapping = aes(x = Sample, y = log2(Count + 1), fill = Sample)) + 
@@ -343,7 +343,7 @@ That looks better. `fill = ` is used to **fill** in areas in ggplot2 plots, wher
 A really nice feature about ggplot is that we can easily colour by another variable by simply changing the column we give to `fill = `.
 
 #### Exercise 
-Colour the plots by other variables (columns) in the metadata file:
+Modify the plot above. Colour by other variables (columns) in the metadata file:
 
 1. characteristics
 2. immunophenotype
@@ -427,7 +427,7 @@ ggplot(data = mygenes_counts, mapping = aes(x = Group, y = Count, colour = Group
   facet_wrap(~ gene_symbol) 
 ```
 
-# Modifying the plot
+# Customising the plot
 
 ### Specifying colours
 
@@ -598,16 +598,11 @@ dev.off()
 
 
 # Key Points
-- RStudio is an interface that makes it easier to use R.
-- `install.packages()` is used to install a packages onto your computer, `library()` is used when you want to use a package in an R script or session
-- `read_csv()` or `read_tsv()` can be used to read in csv and tsv files respectively
-- Useful commands for checking data are `dim()`, `head()`, `tail()`, `str()`, `summary()`, `View()`
-- `gather()` can be used to convert data into long format for ggplot
-- `full_join()` can be used to join different files 
-- **`ggplot2`** is a plotting package that makes it simple to create complex plots and have 3 components: data (dataset), mapping (columns to plot) and geom (type of plot).
-- The `+` sign is used to add layers. It must be placed at the end of the preceding line. If it is added at the beginning of the line, **`ggplot2`** will return an error message.
-- `facet_wrap()` can be used to make subplots
-- ggplot2 plots can be easily coloured by columns in the dataset. `fill = ` can be used to colour areas and `colour = ` to colour points and lines
+- Tabular data can be loaded into R with the tidyverse functions `read_csv()` and `read_tsv()`
+- Tidyverse functions such as `full_join()`, `gather()`, `mutate()`, `filter()` can be used to manipulate data
+- A ggplot has 3 components: data (dataset), mapping (columns to plot) and geom (type of plot). Different types of plots include `geom_point()`, `geom_jitter()`, `geom_line()`, `geom_boxplot()`, `geom_violin()`.
+- `facet_wrap()` can be used to make subplots of the data
+- The aesthetics of a ggplot can be modified, such as colouring by different columns in the dataset, adding labels or changing the background
 
 
 # Further Reading
