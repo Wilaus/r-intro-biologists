@@ -511,8 +511,8 @@ ggplot(data = mygenes_counts, mapping = aes(x = Group, y = log2(Count + 1), colo
   geom_jitter() +
   facet_wrap(~ gene_symbol) + 
   labs(x = "Cell type and stage", y = "Count", title = "Mammary gland RNA-seq data") +
-  theme(axis.text.x = element_text(angle = 90)) + 
-  theme_bw()
+  theme_bw() +
+  theme(axis.text.x = element_text(angle = 90))
 ```
 
 ```{r}
@@ -520,8 +520,8 @@ ggplot(data = mygenes_counts, mapping = aes(x = Group, y = log2(Count + 1), colo
   geom_jitter() +
   facet_wrap(~ gene_symbol) + 
   labs(x = "Cell type and stage", y = "Count", title = "Mammary gland RNA-seq data") +
-  theme(axis.text.x = element_text(angle = 90)) + 
-  theme_minimal()
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 90))
 ```
 
 There are many themes available, you can see some in the [R graph gallery](https://www.r-graph-gallery.com/192-ggplot-themes/).
