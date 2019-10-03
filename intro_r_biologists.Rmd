@@ -93,6 +93,7 @@ R error messages are common and can sometimes be cryptic. You most likely will e
 - Missing commas
 - Mismatched parentheses or brackets
 - Not quoting file paths
+- Not finishing a command so seeing "+" in the console. If you need to, you can press ESC to cancel the command.
 
 To see examples of some R error messages with explanations see [here]( https://github.com/noamross/zero-dependency-problems/issues/7)
 
@@ -304,7 +305,7 @@ To build a ggplot, we use the following basic template that can be used for diff
 
 There are different geoms we can use to create different types of plot e.g. `geom_line()` `geom_point()`, `geom_boxplot()`. To see the geoms available take a look at the ggplot2 help or the handy [ggplot2 cheatsheet](https://github.com/rstudio/cheatsheets/raw/master/data-visualization-2.1.pdf). Or if you type "geom" in RStudio, RStudio will show you the different types of geoms you can use.
 
-We can make boxplots to visualise the distribution of the counts for each sample. This helps us to compare the samples and check if any look unusual.
+We can make boxplots to visualise the distribution of the counts for each sample. This helps us to compare the samples and check if any look unusual. **Note that with ggplot the "+" must go at the end of the line, it can't go at the beginning.**
 
 ```{r}
 ggplot(data = allinfo, mapping = aes(x = Sample, y = Count)) + 
@@ -363,7 +364,7 @@ Modify the plot above. Colour by other variables (columns) in the metadata file:
 
 1. characteristics
 2. immunophenotype
-3. \`developmental stage\` (As there is a space in the column name we need to use backticks around the name (\`). Note that backticks are not single quotes (\'). hTe backtick button is usually at the top left of a laptop keyboard under the ESC button. Check what happens if you don't use backticks.)
+3. \`developmental stage\` (As there is a space in the column name we need to use backticks around the name (\`\`). Note that backticks are not single quotes (\'\'). The backtick button is usually at the top left corner of a laptop keyboard under the ESC button. Check what happens if you don't use backticks.)
 
 
 # Make subplots for each gene
