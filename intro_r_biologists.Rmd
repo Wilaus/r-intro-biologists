@@ -62,7 +62,7 @@ In the window that appears, find the folder you created (e.g. `Intro_R_course`),
 
 ![](images/working_directory.png)
 
-Save the script you created in the previous section as `intro.R` in this directory. You can do this by clikcing on `File > Save` and the default location should be the current working directory (e.g. `Intro_R_course`).
+Save the script you created in the previous section as `intro.R` in this directory. You can do this by clicking on `File > Save` and the default location should be the current working directory (e.g. `Intro_R_course`).
 
 ## Packages
 
@@ -168,7 +168,7 @@ We can read in a file from a path on our computer on on the web and use this as 
 
 > #### Assignment operator shortcut
 > In RStudio, typing <kbd>Alt</kbd> + <kbd>-</kbd> (push <kbd>Alt</kbd> at the
-> same time as the <kbd>-</kbd> key) will write ` <- ` in a single keystroke in a PC, while typing > <kbd>Option</kbd> + <kbd>-</kbd> (push <kbd>Option</kbd> at the
+> same time as the <kbd>-</kbd> key) will write ` <- ` in a single keystroke in Windows, while typing > <kbd>Option</kbd> + <kbd>-</kbd> (push <kbd>Option</kbd> at the
 > same time as the <kbd>-</kbd> key) does the same in a Mac. 
 
 
@@ -337,7 +337,7 @@ The box plots show that the distributions of the samples are not identical but t
 
 Box plots are useful summaries, but hide the shape of the distribution. For example, if the distribution is bimodal, we would not see it in a boxplot. An alternative to the boxplot is the **violin plot**, where the shape (of the density of points) is drawn. See [here](https://blog.bioturing.com/2018/05/16/5-reasons-you-should-use-a-violin-graph/) for an example of how differences in distribution may be hidden in box plots but revealed with violin plots. We could also make jitter plots. A **jitter plot** is similar to a scatter plot. It adds a small amount of random variation to the location of each point so they don’t overlap. There are too many points in this case for the jitter plots to be useful but this is just to demonstrate, as [jitter with and without boxplot](https://simplystatistics.org/2019/02/21/dynamite-plots-must-die/) is a commonly used ggplot type. We will also make use of jitter plots later.
 
-#### Exercise 
+#### Exercises 
 You can easily make different types of plots with ggplot by using different geoms. Using the same data (same x and y values), try editing the code above to make the plots listed in 1. 2. and 3.
 
 1. Make a violin plot (geom_violin)
@@ -364,7 +364,7 @@ That looks better. `fill = ` is used to **fill** in areas in ggplot2 plots, wher
 
 A really nice feature about ggplot is that we can easily colour by another variable by simply changing the column we give to `fill = `.
 
-#### Exercise 
+#### Exercises 
 Modify the plot above. Colour by other variables (columns) in the metadata file:
 
 1. characteristics
@@ -403,7 +403,7 @@ mygenes <- c("Csn1s2a", "Csn1s1", "Csn2", "Glycam1", "COX1", "Trf", "Wap", "Eef1
 
 > #### Note on specifying genes
 > This example is to demonstrate how we could specify any genes in the data to plot. The genes used here were the 8 genes with the highest counts summed across all samples. The command for how to get the gene symbols for these 8 genes is shown below.  
->allinfo %>%  
+> mygenes <- allinfo %>%  
 >  group_by(gene_symbol) %>%  
 >  summarise(Total_count = sum(Count)) %>%  
 >  arrange(desc(Total_count)) %>%  
@@ -476,7 +476,7 @@ ggplot(data = mygenes_counts, mapping = aes(x = Group, y = log2(Count + 1), colo
 ```
 
 
-#### Exercise
+#### Exercises
 Make a colourblind friendly plot. Hint there are colourblind friendly palettes [here](http://www.cookbook-r.com/Graphs/Colors_(ggplot2)/#a-colorblind-friendly-palette)
 
 ### Axis labels and Title
@@ -556,10 +556,10 @@ We'll add another column called "Group_f" where we'll make the Group column into
 mygenes_counts <- mutate(mygenes_counts, Group_f = factor(Group, levels = group_order))
 ```
 
-Take a look at the data.
+Take a look at the data. As the table is quite wide we can use `select()` to select just the columns we want to view.
 
 ```{r}
-mygenes_counts
+mygenes_counts %>% select(X1, Group, Group_f)
 ```
 
 Notice that the Group column has `<chr>` under the heading, that indicates is a character data type, while the Group_f column has `<fct>` under the heading, indicating it is a factor data type. The `str()` command that we saw previously is useful to check the data types in objects.
@@ -591,7 +591,7 @@ ggplot(data = mygenes_counts, mapping = aes(x = Group_f, y = log2(Count + 1), co
 We could do similar if we wanted to have the genes in the facets in a different order. For example, we could add another column called "gene_symbol_f" where we make the gene_symbol column into a factor, specifying the order of the levels.
 
 # Saving plots
-We can save plots interactively by clicking Export in the Plots window. Or we can output plots to pdf using `pdf()` followed by `dev.off()`. We put our plot code after the call to `pdf()` and before closing the plot device with `dev.off()`.
+We can save plots interactively by clicking Export in the Plots window and saving as e.g. "myplot.pdf". Or we can output plots to pdf using `pdf()` followed by `dev.off()`. We put our plot code after the call to `pdf()` and before closing the plot device with `dev.off()`.
 
 Let's save our last plot.
 
@@ -609,7 +609,7 @@ dev.off()
 ```
 
 
-# Exercises
+#### Exercises
 1. Download the raw counts for this dataset
   a. Make a boxplot. Do the samples look any different to the normalised counts?
   b. Make subplots for the same set of 8 genes. Do they look any different to the normalised counts?
