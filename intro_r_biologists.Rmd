@@ -245,6 +245,8 @@ summary(counts)
 
 # Formatting the data
 
+## Converting from wide to long format
+
 We will first convert the data from wide format into long format to make it easier to work with and plot with ggplot. We want just one column containing all the expression values instead of multiple columns with counts for each sample, as shown in the image below.
 
 ![](images/reshape_data.png)
@@ -273,7 +275,9 @@ Let's have a look at the data.
 seqdata
 ```
 
-Now that we've got just one column containing sample ids in both our counts file and our metadata files we can join them together using the sample ids.
+## Joining two tables
+
+Now that we've got just one column containing sample ids in both our counts and metadata objects we can join them together using the sample ids. This will make it easier to identify the categories for each sample (e.g. if it's basal cell type) and to use that information in our plots.
 
 ![](images/join_data.png)
 
@@ -310,6 +314,8 @@ To build a ggplot, we use the following basic template that can be used for diff
 
 There are different geoms we can use to create different types of plot e.g. `geom_line()` `geom_point()`, `geom_boxplot()`. To see the geoms available take a look at the ggplot2 help or the handy [ggplot2 cheatsheet](https://github.com/rstudio/cheatsheets/raw/master/data-visualization-2.1.pdf). Or if you type "geom" in RStudio, RStudio will show you the different types of geoms you can use.
 
+## Creating a boxplot
+
 We can make boxplots to visualise the distribution of the counts for each sample. This helps us to compare the samples and check if any look unusual. **Note that with ggplot the "+" must go at the end of the line, it can't go at the beginning.**
 
 ```{r}
@@ -337,7 +343,7 @@ The box plots show that the distributions of the samples are not identical but t
 
 Box plots are useful summaries, but hide the shape of the distribution. For example, if the distribution is bimodal, we would not see it in a boxplot. An alternative to the boxplot is the **violin plot**, where the shape (of the density of points) is drawn. See [here](https://blog.bioturing.com/2018/05/16/5-reasons-you-should-use-a-violin-graph/) for an example of how differences in distribution may be hidden in box plots but revealed with violin plots.
 
-### Exercise
+#### Exercise
 You can easily make different types of plots with ggplot by using different geoms. Using the same data (same x and y values), try editing the code above to make a violin plot (Hint: there's a `geom_violin`)
 
 # Colouring by categories
@@ -362,7 +368,7 @@ That looks better. `fill = ` is used to **fill** in areas in ggplot2 plots, wher
 
 A really nice feature about ggplot is that we can easily colour by another variable by simply changing the column we give to `fill = `.
 
-### Exercises 
+#### Exercise 
 Modify the plot above. Colour by other variables (columns) in the metadata file:
 
 1. characteristics
@@ -370,9 +376,11 @@ Modify the plot above. Colour by other variables (columns) in the metadata file:
 3. \`developmental stage\` (As there is a space in the column name we need to use backticks around the name (\`\`). Note that backticks are not single quotes (\'\'). The backtick button is usually at the top left corner of a laptop keyboard under the ESC button. Check what happens if you don't use backticks.)
 
 
-# Make subplots for each gene
+# Creating subplots for each gene
 
 With ggplot we can easily make subplots using *faceting*. For example we can make [stripcharts](http://www.sthda.com/english/wiki/ggplot2-stripchart-jitter-quick-start-guide-r-software-and-data-visualization). These are a type of scatterplot and are useful when there are a small number of samples (when there are not too many points to visualise). Here we will make stripcharts plotting expression by the groups (basal virgin, basal pregnant, basal lactating, luminal virgin, luminal pregnant, luminal lactating) for each gene. 
+
+## Make shorter category names
 
 First we'll use `mutate()` to add a column with shorter group names to use in the plot, as the group names in the characteristics column are quite long.
 
@@ -392,6 +400,8 @@ Have a look at this data using `head()`. You should see a new column called `Gro
 ```{r}
 head(allinfo)
 ```
+
+## Filter for genes of interest
 
 We can make plots for a set of genes.
 
@@ -413,6 +423,8 @@ We filter our data for just these genes of interest. We use %in% to check if a v
 ```{r}
 mygenes_counts <- filter(allinfo, gene_symbol %in% mygenes)
 ```
+
+## Create plots for each gene
 
 We can make boxplots for just these genes. We *facet* on the `gene_symbol` column using `facet_wrap()`. We add the tilde symbol `~ ` in front of the column we want to facet on.
 
@@ -473,7 +485,7 @@ ggplot(data = mygenes_counts, mapping = aes(x = Group, y = log2(Count + 1), colo
 ```
 
 
-### Exercise
+#### Exercise
 Make a colourblind friendly plot. Hint there are colourblind friendly palettes [here](http://www.cookbook-r.com/Graphs/Colors_(ggplot2)/#a-colorblind-friendly-palette)
 
 ## Axis labels and Title
@@ -536,7 +548,7 @@ ggplot(data = mygenes_counts, mapping = aes(x = Group, y = log2(Count + 1), colo
         panel.grid.minor = element_blank())
 ```
 
-## Order of groups
+## Order of categories
 
 The groups have been plotted in alphabetical order on the x axis and in the legend (that is the default order), however, we may want to change the order. We may prefer to plot the groups in order of stage, for example, basal virgin, basal pregnant, basal lactate, luminal virgin, luminal pregnant, luminal lactate.
 
@@ -606,7 +618,7 @@ dev.off()
 ```
 
 
-### Exercise
+#### Exercise
 1. Download the raw counts for this dataset
   a. Make a boxplot. Do the samples look any different to the normalised counts?
   b. Make subplots for the same set of 8 genes. Do they look any different to the normalised counts?
