@@ -50,7 +50,7 @@ Keeping an accurate record of how you've manipulated your data is important for 
 
 ## Working directory
 
-Opening an RStudio session launches it from a specific location. This is the ‘working directory’. **R looks in the working directory by default to read in data and save files.** You can find out what the working directory is by using the command `getwd()`. This shows you the path to your working directory in the console. In Mac this is in the format `/path/to/working/directory` and in Windows `C:\path\to\working\directory`. It is often useful to have your data and R scripts in the same directory and set this as your working directory. We will do this now. 
+Opening an RStudio session launches it from a specific location. This is the ‘working directory’. **R looks in the working directory by default to read in data and save files.** You can find out what the working directory is by using the command `getwd()`. This shows you the path to your working directory in the console. In Mac this is in the format `/path/to/working/directory` and in Windows `C:\path\to\working\directory`. It is often useful to have your data and R scripts in the same directory and set this as your working directory. We will do this now.
 
 Make a folder for this course somewhere on your computer that you will be able to easily find. Name the folder for example, `Intro_R_course`. Then, to set this folder as your working directory:
 
@@ -82,8 +82,8 @@ To see what any function in R does, type a `?` before the name and help informat
 ?install.packages
 ```
 
-> #### Tab completion
-> A very useful feature is Tab completion. You can start typing and use <kbd>Tab</kbd> to autocomplete code, for example, a function name. 
+> ### Tab completion
+> A very useful feature is Tab completion. You can start typing and use <kbd>Tab</kbd> to autocomplete code, for example, a function name.
 
 ## Common R errors
 
@@ -105,7 +105,7 @@ To see examples of some R error messages with explanations see [here]( https://g
 The data files required for this workshop are available on [GitHub](https://github.com/mblue9/r-intro-biologists/blob/master/data.zip). To download the data.zip file, you can click [here](https://github.com/mblue9/r-intro-biologists/raw/master/data.zip). Unzip the file and store this `data` folder in your working directory.
 
 
-## GREIN (GEO RNA-seq Experiments Interactive Navigator) 
+## GREIN (GEO RNA-seq Experiments Interactive Navigator)
 In this tutorial, we will learn some R through creating plots to visualise data from an RNA-seq experiment. RNA-seq counts file can be obtained from the [GREIN platform](https://www.nature.com/articles/s41598-019-43935-8). GREIN provides >6,500 published datasets from GEO that have been uniformly processed. It is available at http://www.ilincs.org/apps/grein/. You can search for a dataset of interest using the GEO code. We obtained the dataset used here using the code GSE60450. GREIN provide QC metrics for the RNA-seq datasets and both raw and normalized counts. We will use the normalized counts here. These are the counts of reads for each gene for each sample normalized for differences in sequencing depth and composition bias. Generally, the higher the number of counts the more the gene is expressed.
 \  
 \ 
@@ -142,7 +142,7 @@ In this course we will use the **tidyverse**. The tidyverse is a collection of R
 
 We use `library()` to load in the packages that we need. As described in the cooking analogy in the first screenshot, `install.packages()` is like buying a saucepan, `library()` is taking it out of the cupboard to use it.
 
-```{r, message=FALSE}
+```{r, message=FALSE, warning=FALSE}
 library(tidyverse)
 ```
 
@@ -337,8 +337,10 @@ The box plots show that the distributions of the samples are not identical but t
 
 Box plots are useful summaries, but hide the shape of the distribution. For example, if the distribution is bimodal, we would not see it in a boxplot. An alternative to the boxplot is the **violin plot**, where the shape (of the density of points) is drawn. See [here](https://blog.bioturing.com/2018/05/16/5-reasons-you-should-use-a-violin-graph/) for an example of how differences in distribution may be hidden in box plots but revealed with violin plots.
 
-#### Exercises 
+### Exercise
 You can easily make different types of plots with ggplot by using different geoms. Using the same data (same x and y values), try editing the code above to make a violin plot (Hint: there's a `geom_violin`)
+
+# Colouring by categories
 
 What if we would like to add some colour to the plot, for example, a different colour for each sample. 
 
@@ -360,7 +362,7 @@ That looks better. `fill = ` is used to **fill** in areas in ggplot2 plots, wher
 
 A really nice feature about ggplot is that we can easily colour by another variable by simply changing the column we give to `fill = `.
 
-#### Exercises 
+### Exercises 
 Modify the plot above. Colour by other variables (columns) in the metadata file:
 
 1. characteristics
@@ -398,7 +400,7 @@ mygenes <- c("Csn1s2a", "Csn1s1", "Csn2", "Glycam1", "COX1", "Trf", "Wap", "Eef1
 ```
 
 > #### Note on specifying genes
-> This example is to demonstrate how we could specify any genes in the data to plot. The genes used here were the 8 genes with the highest counts summed across all samples. The command for how to get the gene symbols for these 8 genes is shown below.  
+> This example is to demonstrate how we could specify any genes in the data to plot. The genes used here were the 8 genes with the highest counts summed across all samples. The command for how to get the gene symbols for these 8 genes is shown below.
 > mygenes <- allinfo %>%  
 >  group_by(gene_symbol) %>%  
 >  summarise(Total_count = sum(Count)) %>%  
@@ -412,7 +414,7 @@ We filter our data for just these genes of interest. We use %in% to check if a v
 mygenes_counts <- filter(allinfo, gene_symbol %in% mygenes)
 ```
 
-We can make boxplots for just these genes. We *facet* on the `gene_symbol` column using `facet_wrap()`. We add the tilde symbol `~ ` in front of the column we want to facet on. 
+We can make boxplots for just these genes. We *facet* on the `gene_symbol` column using `facet_wrap()`. We add the tilde symbol `~ ` in front of the column we want to facet on.
 
 ```{r}
 ggplot(data = mygenes_counts, mapping = aes(x = Group, y = log2(Count + 1), fill = Group)) +
@@ -420,8 +422,7 @@ ggplot(data = mygenes_counts, mapping = aes(x = Group, y = log2(Count + 1), fill
   facet_wrap(~ gene_symbol)
 ```
 
-The boxplots don't look good as we only have two values per group. We could just plot the individual points instead. We could use 
-`geom_point()` to make a scatterplot.
+The boxplots don't look good as we only have two values per group. We could just plot the individual points instead. We could use `geom_point()` to make a scatterplot.
 ```{r}
 ggplot(data = mygenes_counts, mapping = aes(x = Group, y = log2(Count + 1))) +
   geom_point() +
@@ -441,12 +442,12 @@ We can colour the groups similar to before using `colour = `.
 ```{r}
 ggplot(data = mygenes_counts, mapping = aes(x = Group, y = log2(Count + 1), colour = Group)) +
   geom_jitter() +
-  facet_wrap(~ gene_symbol) 
+  facet_wrap(~ gene_symbol)
 ```
 
 # Customising the plot
 
-### Specifying colours
+## Specifying colours
 
 We might want to change the colours. To see what colour names are available you can type `colours()`. There is also an [R colours cheatsheet](https://www.nceas.ucsb.edu/~ frazier/RSpatialGuides/colorPaletteCheatsheet.pdf) that shows what the colours look like.
 ```{r}
@@ -462,7 +463,7 @@ ggplot(data = mygenes_counts, mapping = aes(x = Group, y = log2(Count + 1), colo
   scale_colour_manual(values = mycolours)
 ```
 
-There are built-in colour palettes that can be handy to use, where the sets of colours are predefined. `scale_colour_brewer()` is a popular one (there is also `scale_fill_brewer()`). You can take a look at the help for `scale_colour_brewer()` to see what palettes are available. The [R colours cheatsheet](https://www.nceas.ucsb.edu/~frazier/RSpatialGuides/colorPaletteCheatsheet.pdf) also shows what the colours of the palettes look like. There's one called "Dark2", let's have a look at that. 
+There are built-in colour palettes that can be handy to use, where the sets of colours are predefined. `scale_colour_brewer()` is a popular one (there is also `scale_fill_brewer()`). You can take a look at the help for `scale_colour_brewer()` to see what palettes are available. The [R colours cheatsheet](https://www.nceas.ucsb.edu/~frazier/RSpatialGuides/colorPaletteCheatsheet.pdf) also shows what the colours of the palettes look like. There's one called "Dark2", let's have a look at that.
 
 ```{r}
 ggplot(data = mygenes_counts, mapping = aes(x = Group, y = log2(Count + 1), colour = Group)) +
@@ -472,28 +473,28 @@ ggplot(data = mygenes_counts, mapping = aes(x = Group, y = log2(Count + 1), colo
 ```
 
 
-#### Exercises
+### Exercise
 Make a colourblind friendly plot. Hint there are colourblind friendly palettes [here](http://www.cookbook-r.com/Graphs/Colors_(ggplot2)/#a-colorblind-friendly-palette)
 
-### Axis labels and Title
+## Axis labels and Title
 
 We can change the axis labels and add a title with `labs()`. To change the x axis label we use `labs(x = "New name")`. To change the y axis label we use `labs(y = "New name")` or we can change them all at the same time.
 
 ```{r}
 ggplot(data = mygenes_counts, mapping = aes(x = Group, y = log2(Count + 1), colour = Group)) +
   geom_jitter() +
-  facet_wrap(~ gene_symbol) + 
+  facet_wrap(~ gene_symbol) +
   labs(x = "Cell type and stage", y = "Count", title = "Mammary gland RNA-seq data")
 ```
 
-### Themes
+## Themes
 
 We can adjust the text on the x axis (the group labels) by turning them 90 degrees so we can read the labels better. To do this we modify the ggplot theme. Themes are the non-data parts of the plot.
 
 ```{r}
 ggplot(data = mygenes_counts, mapping = aes(x = Group, y = log2(Count + 1), colour = Group)) +
   geom_jitter() +
-  facet_wrap(~ gene_symbol) + 
+  facet_wrap(~ gene_symbol) +
   labs(x = "Cell type and stage", y = "Count", title = "Mammary gland RNA-seq data") +
   theme(axis.text.x = element_text(angle = 90))
 ```
@@ -505,7 +506,7 @@ There are also a lot of built-in themes. Let's have a look at a couple of the mo
 ```{r}
 ggplot(data = mygenes_counts, mapping = aes(x = Group, y = log2(Count + 1), colour = Group)) +
   geom_jitter() +
-  facet_wrap(~ gene_symbol) + 
+  facet_wrap(~ gene_symbol) +
   labs(x = "Cell type and stage", y = "Count", title = "Mammary gland RNA-seq data") +
   theme_bw() +
   theme(axis.text.x = element_text(angle = 90))
@@ -514,7 +515,7 @@ ggplot(data = mygenes_counts, mapping = aes(x = Group, y = log2(Count + 1), colo
 ```{r}
 ggplot(data = mygenes_counts, mapping = aes(x = Group, y = log2(Count + 1), colour = Group)) +
   geom_jitter() +
-  facet_wrap(~ gene_symbol) + 
+  facet_wrap(~ gene_symbol) +
   labs(x = "Cell type and stage", y = "Count", title = "Mammary gland RNA-seq data") +
   theme_minimal() +
   theme(axis.text.x = element_text(angle = 90))
@@ -527,15 +528,15 @@ We can also modify parts of the theme individually. We can remove the grey backg
 ```{r}
 ggplot(data = mygenes_counts, mapping = aes(x = Group, y = log2(Count + 1), colour = Group)) +
   geom_jitter() +
-  facet_wrap(~ gene_symbol) + 
+  facet_wrap(~ gene_symbol) +
   labs(x = "Cell type and stage", y = "Count", title = "Mammary gland RNA-seq data") +
-  theme(axis.text.x = element_text(angle = 90)) + 
-  theme(panel.background = element_blank(), 
-        panel.grid.major = element_blank(), 
+  theme(axis.text.x = element_text(angle = 90)) +
+  theme(panel.background = element_blank(),
+        panel.grid.major = element_blank(),
         panel.grid.minor = element_blank())
 ```
 
-### Order of groups
+## Order of groups
 
 The groups have been plotted in alphabetical order on the x axis and in the legend (that is the default order), however, we may want to change the order. We may prefer to plot the groups in order of stage, for example, basal virgin, basal pregnant, basal lactate, luminal virgin, luminal pregnant, luminal lactate.
 
@@ -544,7 +545,7 @@ First let's make an object with the group order that we want.
 group_order <- c("bvirg", "bpreg", "blact", "lvirg", "lpreg", "llact")
 ```
 
-Next we need to make a column with the groups into an R data type called a **factor**. Factors in R are a special data type used to specify categories, you can read more about them in the [R for Data Science book](https://r4ds.had.co.nz/vectors.html#augmented-vectors). The names of the categories are called the factor **levels**. 
+Next we need to make a column with the groups into an R data type called a **factor**. Factors in R are a special data type used to specify categories, you can read more about them in the [R for Data Science book](https://r4ds.had.co.nz/vectors.html#augmented-vectors). The names of the categories are called the factor **levels**.
 
 We'll add another column called "Group_f" where we'll make the Group column into a factor and specify what order we want the levels of the factor.
 
@@ -577,11 +578,11 @@ The levels are in the order that we want, so we can now change our plot to use t
 ```{r}
 ggplot(data = mygenes_counts, mapping = aes(x = Group_f, y = log2(Count + 1), colour = Group_f)) +
   geom_jitter() +
-  facet_wrap(~ gene_symbol) + 
+  facet_wrap(~ gene_symbol) +
   labs(x = "Cell type and stage", y = "Count", title = "Mammary gland RNA-seq data") +
-  theme(axis.text.x = element_text(angle = 90)) + 
-  theme(panel.background = element_blank(), 
-        panel.grid.major = element_blank(), 
+  theme(axis.text.x = element_text(angle = 90)) +
+  theme(panel.background = element_blank(),
+        panel.grid.major = element_blank(),
         panel.grid.minor = element_blank())
 ```
 We could do similar if we wanted to have the genes in the facets in a different order. For example, we could add another column called "gene_symbol_f" where we make the gene_symbol column into a factor, specifying the order of the levels.
@@ -595,17 +596,17 @@ Let's save our last plot.
 pdf("myplot.pdf")
 ggplot(data = mygenes_counts, mapping = aes(x = Group_f, y = log2(Count + 1), colour = Group_f)) +
   geom_jitter() +
-  facet_wrap(~ gene_symbol) + 
+  facet_wrap(~ gene_symbol) +
   labs(x = "Cell type and stage", y = "Count", title = "Mammary gland RNA-seq data") +
-  theme(axis.text.x = element_text(angle = 90)) + 
-  theme(panel.background = element_blank(), 
-        panel.grid.major = element_blank(), 
+  theme(axis.text.x = element_text(angle = 90)) +
+  theme(panel.background = element_blank(),
+        panel.grid.major = element_blank(),
         panel.grid.minor = element_blank())
 dev.off()
 ```
 
 
-#### Exercises
+### Exercise
 1. Download the raw counts for this dataset
   a. Make a boxplot. Do the samples look any different to the normalised counts?
   b. Make subplots for the same set of 8 genes. Do they look any different to the normalised counts?
