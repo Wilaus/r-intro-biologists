@@ -335,14 +335,10 @@ ggplot(data = allinfo, mapping = aes(x = Sample, y = log2(Count + 1))) +
 
 The box plots show that the distributions of the samples are not identical but they are not very different.
 
-Box plots are useful summaries, but hide the shape of the distribution. For example, if the distribution is bimodal, we would not see it in a boxplot. An alternative to the boxplot is the **violin plot**, where the shape (of the density of points) is drawn. See [here](https://blog.bioturing.com/2018/05/16/5-reasons-you-should-use-a-violin-graph/) for an example of how differences in distribution may be hidden in box plots but revealed with violin plots. We could also make jitter plots. A **jitter plot** is similar to a scatter plot. It adds a small amount of random variation to the location of each point so they don’t overlap. There are too many points in this case for the jitter plots to be useful but this is just to demonstrate, as [jitter with and without boxplot](https://simplystatistics.org/2019/02/21/dynamite-plots-must-die/) is a commonly used ggplot type. We will also make use of jitter plots later.
+Box plots are useful summaries, but hide the shape of the distribution. For example, if the distribution is bimodal, we would not see it in a boxplot. An alternative to the boxplot is the **violin plot**, where the shape (of the density of points) is drawn. See [here](https://blog.bioturing.com/2018/05/16/5-reasons-you-should-use-a-violin-graph/) for an example of how differences in distribution may be hidden in box plots but revealed with violin plots.
 
 #### Exercises 
-You can easily make different types of plots with ggplot by using different geoms. Using the same data (same x and y values), try editing the code above to make the plots listed in 1. 2. and 3.
-
-1. Make a violin plot (geom_violin)
-2. Make a jitter plot (geom_jitter)
-3. Make a boxplot with a jitter plot overlaid (Hint: you can add multiple geoms with + )
+You can easily make different types of plots with ggplot by using different geoms. Using the same data (same x and y values), try editing the code above to make a violin plot (Hint: there's a `geom_violin`)
 
 What if we would like to add some colour to the plot, for example, a different colour for each sample. 
 
@@ -374,7 +370,7 @@ Modify the plot above. Colour by other variables (columns) in the metadata file:
 
 # Make subplots for each gene
 
-With ggplot we can easily make subplots using *faceting*. For example we can make stripcharts, plotting expression by the groups (basal virgin, basal pregnant, basal lactating, luminal virgin, luminal pregnant, luminal lactating) for each gene. 
+With ggplot we can easily make subplots using *faceting*. For example we can make [stripcharts](http://www.sthda.com/english/wiki/ggplot2-stripchart-jitter-quick-start-guide-r-software-and-data-visualization). These are a type of scatterplot and are useful when there are a small number of samples (when there are not too many points to visualise). Here we will make stripcharts plotting expression by the groups (basal virgin, basal pregnant, basal lactating, luminal virgin, luminal pregnant, luminal lactating) for each gene. 
 
 First we'll use `mutate()` to add a column with shorter group names to use in the plot, as the group names in the characteristics column are quite long.
 
@@ -432,7 +428,7 @@ ggplot(data = mygenes_counts, mapping = aes(x = Group, y = log2(Count + 1))) +
   facet_wrap(~ gene_symbol)
 ```
 
-The points are overlapping so we will use `geom_jitter()` which adds a small amount of random variation to the points.
+The points are overlapping so we will make a jitter plot using `geom_jitter()`. A **jitter plot** is similar to a scatter plot. It adds a small amount of random variation to the location of each point so they don’t overlap. If is also quite common to combine jitter plots with other types of plot, for example, [jitter with boxplot](https://simplystatistics.org/2019/02/21/dynamite-plots-must-die/).
 
 ```{r}
 ggplot(data = mygenes_counts, mapping = aes(x = Group, y = log2(Count + 1))) +
