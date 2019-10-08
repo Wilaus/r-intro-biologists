@@ -466,7 +466,7 @@ ggplot(data = mygenes_counts, mapping = aes(x = Group, y = log2(Count + 1), colo
   scale_colour_manual(values = mycolours)
 ```
 
-There are built-in colour palettes that can be handy to use, where the sets of colours are predefined. `scale_colour_brewer()` is a popular one (there is also `scale_fill_brewer()`). You can take a look at the help for `scale_colour_brewer()` to see what palettes are available. The [R colours cheatsheet](https://www.nceas.ucsb.edu/~ frazier/RSpatialGuides/colorPaletteCheatsheet.pdf) also shows what the colours of the palettes look like. There's one called "Dark2", let's have a look at that. 
+There are built-in colour palettes that can be handy to use, where the sets of colours are predefined. `scale_colour_brewer()` is a popular one (there is also `scale_fill_brewer()`). You can take a look at the help for `scale_colour_brewer()` to see what palettes are available. The [R colours cheatsheet](https://www.nceas.ucsb.edu/~frazier/RSpatialGuides/colorPaletteCheatsheet.pdf) also shows what the colours of the palettes look like. There's one called "Dark2", let's have a look at that. 
 
 ```{r}
 ggplot(data = mygenes_counts, mapping = aes(x = Group, y = log2(Count + 1), colour = Group)) +
