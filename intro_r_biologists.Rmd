@@ -3,15 +3,18 @@ title: "Introduction to R for Biologists"
 author: "Maria Doyle, Jessica Chung, Vicky Perreau"
 date: "`r format(Sys.time(), '%d %B %Y')`"
 output:
+  pdf_document:
+    toc: yes
+    toc_depth: 3
+  html_notebook:
+    toc: yes
+    toc_depth: 3
+    toc_float: yes
   html_document:
     df_print: paged
     toc: yes
     toc_float: yes
     toc_depth: '3'
-  html_notebook:
-    toc: yes
-    toc_depth: 3
-    toc_float: yes
 ---
 
 <!--
@@ -190,8 +193,8 @@ In R we use `<-` to assign values to objects. `<-` is the **assignment operator*
 We can read in a file from a path on our computer on on the web and use this as the value. Note that we need to put quotes ("") around file paths.
 
 > #### Assignment operator shortcut
-> In RStudio, typing <kbd>Alt</kbd> + <kbd>-</kbd> (push <kbd>Alt</kbd> at the
-> same time as the <kbd>-</kbd> key) will write ` <- ` in a single keystroke in Windows, while typing > <kbd>Option</kbd> + <kbd>-</kbd> (push <kbd>Option</kbd> at the
+> In RStudio, typing <kbd>Alt</kbd> + <kbd>-</kbd> (holding down <kbd>Alt</kbd> at the
+> same time as the <kbd>-</kbd> key) will write ` <- ` in a single keystroke in Windows, while typing > <kbd>Option</kbd> + <kbd>-</kbd> (holding down <kbd>Option</kbd> at the
 > same time as the <kbd>-</kbd> key) does the same in a Mac. 
 
 
@@ -432,7 +435,7 @@ Modify the plot above. Colour by other variables (columns) in the metadata file:
 
 1. characteristics
 2. immunophenotype
-3. \`developmental stage\` (As there is a space in the column name we need to use backticks around the name (\`\`). Note that backticks are not single quotes (\'\'). The backtick button is usually at the top left corner of a laptop keyboard under the ESC key. Check what happens if you don't use backticks.)
+3. \`developmental stage\` (As there is a space in the column name we need to use backticks around the name (\`\`). Note that backticks are not single quotes (\'\'). The backtick key is usually at the top left corner of a laptop keyboard under the ESC key. Check what happens if you don't use backticks.)
 
 <button onclick="myFunction('q3')">Show solutions</button>
 <div id="q3" style="display:none">
@@ -441,15 +444,18 @@ Modify the plot above. Colour by other variables (columns) in the metadata file:
 
 ```{r eval=FALSE}
 # Plot characteristics
-ggplot(data = allinfo, mapping = aes(x = Sample, y = log2(Count + 1), fill = characteristics)) + 
+ggplot(data = allinfo, 
+       mapping = aes(x = Sample, y = log2(Count + 1), fill = characteristics)) + 
   geom_boxplot() 
 
 # Plot immunophenotype
-ggplot(data = allinfo, mapping = aes(x = Sample, y = log2(Count + 1), fill = immunophenotype)) + 
+ggplot(data = allinfo,
+       mapping = aes(x = Sample, y = log2(Count + 1), fill = immunophenotype)) + 
   geom_boxplot()
 
 # Plot developmental stage
-ggplot(data = allinfo, mapping = aes(x = Sample, y = log2(Count + 1), fill = `developmental stage`)) + 
+ggplot(data = allinfo, 
+       mapping = aes(x = Sample, y = log2(Count + 1), fill = `developmental stage`)) + 
   geom_boxplot() 
 ```
 
@@ -561,7 +567,8 @@ mycolours <- c("turquoise", "plum", "tomato", "violet", "steelblue", "chocolate"
 Then we then add these colours to the plot using a `+` and `scale_colour_manual(values = mycolours)`.
 
 ```{r}
-ggplot(data = mygenes_counts, mapping = aes(x = Group, y = log2(Count + 1), colour = Group)) +
+ggplot(data = mygenes_counts, 
+       mapping = aes(x = Group, y = log2(Count + 1), colour = Group)) +
   geom_jitter() +
   facet_wrap(~ gene_symbol) +
   scale_colour_manual(values = mycolours)
@@ -590,13 +597,15 @@ Make a colourblind-friendly plot using the colourblind-friendly palettes [here](
 cbPalette <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2")
 
 # An example of a colourblind-friendly stripchart
-ggplot(data = mygenes_counts, mapping = aes(x = Group, y = log2(Count + 1), colour = Group)) +
+ggplot(data = mygenes_counts,
+       mapping = aes(x = Group, y = log2(Count + 1), colour = Group)) +
   geom_jitter() +
   facet_wrap(~ gene_symbol) +
   scale_colour_manual(values = cbPalette)
 
 # An example of a colourblind-friendly boxplot
-ggplot(data = allinfo, mapping = aes(x = Sample, y = log2(Count + 1), fill = characteristics)) + 
+ggplot(data = allinfo, 
+       mapping = aes(x = Sample, y = log2(Count + 1), fill = characteristics)) + 
   geom_boxplot() +
   scale_fill_manual(values = cbPalette)
 ```
@@ -609,7 +618,8 @@ ggplot(data = allinfo, mapping = aes(x = Sample, y = log2(Count + 1), fill = cha
 We can change the axis labels and add a title with `labs()`. To change the x axis label we use `labs(x = "New name")`. To change the y axis label we use `labs(y = "New name")` or we can change them all at the same time.
 
 ```{r}
-ggplot(data = mygenes_counts, mapping = aes(x = Group, y = log2(Count + 1), colour = Group)) +
+ggplot(data = mygenes_counts, 
+       mapping = aes(x = Group, y = log2(Count + 1), colour = Group)) +
   geom_jitter() +
   facet_wrap(~ gene_symbol) +
   labs(x = "Cell type and stage", y = "Count", title = "Mammary gland RNA-seq data")
@@ -620,7 +630,8 @@ ggplot(data = mygenes_counts, mapping = aes(x = Group, y = log2(Count + 1), colo
 We can adjust the text on the x axis (the group labels) by turning them 90 degrees so we can read the labels better. To do this we modify the ggplot theme. Themes are the non-data parts of the plot.
 
 ```{r}
-ggplot(data = mygenes_counts, mapping = aes(x = Group, y = log2(Count + 1), colour = Group)) +
+ggplot(data = mygenes_counts, 
+       mapping = aes(x = Group, y = log2(Count + 1), colour = Group)) +
   geom_jitter() +
   facet_wrap(~ gene_symbol) +
   labs(x = "Cell type and stage", y = "Count", title = "Mammary gland RNA-seq data") +
@@ -632,7 +643,8 @@ We can remove the grey background and grid lines.
 There are also a lot of built-in themes. Let's have a look at a couple of the more widely used themes. The default ggplot theme is `theme_grey().`
 
 ```{r}
-ggplot(data = mygenes_counts, mapping = aes(x = Group, y = log2(Count + 1), colour = Group)) +
+ggplot(data = mygenes_counts, 
+       mapping = aes(x = Group, y = log2(Count + 1), colour = Group)) +
   geom_jitter() +
   facet_wrap(~ gene_symbol) +
   labs(x = "Cell type and stage", y = "Count", title = "Mammary gland RNA-seq data") +
@@ -641,7 +653,8 @@ ggplot(data = mygenes_counts, mapping = aes(x = Group, y = log2(Count + 1), colo
 ```
 
 ```{r}
-ggplot(data = mygenes_counts, mapping = aes(x = Group, y = log2(Count + 1), colour = Group)) +
+ggplot(data = mygenes_counts, 
+       mapping = aes(x = Group, y = log2(Count + 1), colour = Group)) +
   geom_jitter() +
   facet_wrap(~ gene_symbol) +
   labs(x = "Cell type and stage", y = "Count", title = "Mammary gland RNA-seq data") +
@@ -654,7 +667,8 @@ There are many themes available, you can see some in the [R graph gallery](https
 We can also modify parts of the theme individually. We can remove the grey background and grid lines with the code below.
 
 ```{r}
-ggplot(data = mygenes_counts, mapping = aes(x = Group, y = log2(Count + 1), colour = Group)) +
+ggplot(data = mygenes_counts, 
+       mapping = aes(x = Group, y = log2(Count + 1), colour = Group)) +
   geom_jitter() +
   facet_wrap(~ gene_symbol) +
   labs(x = "Cell type and stage", y = "Count", title = "Mammary gland RNA-seq data") +
@@ -704,7 +718,8 @@ levels(mygenes_counts$Group_f)
 The levels are in the order that we want, so we can now change our plot to use the "Group_f" column instead of Group column (change `x = ` and `colour = `).
 
 ```{r}
-ggplot(data = mygenes_counts, mapping = aes(x = Group_f, y = log2(Count + 1), colour = Group_f)) +
+ggplot(data = mygenes_counts, 
+       mapping = aes(x = Group_f, y = log2(Count + 1), colour = Group_f)) +
   geom_jitter() +
   facet_wrap(~ gene_symbol) +
   labs(x = "Cell type and stage", y = "Count", title = "Mammary gland RNA-seq data") +
@@ -722,7 +737,8 @@ Let's save our last plot.
 
 ```{r, eval=FALSE}
 pdf("myplot.pdf")
-ggplot(data = mygenes_counts, mapping = aes(x = Group_f, y = log2(Count + 1), colour = Group_f)) +
+ggplot(data = mygenes_counts, 
+       mapping = aes(x = Group_f, y = log2(Count + 1), colour = Group_f)) +
   geom_jitter() +
   facet_wrap(~ gene_symbol) +
   labs(x = "Cell type and stage", y = "Count", title = "Mammary gland RNA-seq data") +
