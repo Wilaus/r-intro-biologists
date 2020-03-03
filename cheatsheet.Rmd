@@ -3,6 +3,8 @@ title: "Introduction to R for Biologists cheatsheet"
 author: "Maria Doyle"
 date: "`r format(Sys.time(), '%d %B %Y')`"
 output:
+  pdf_document:
+    toc: no
   html_notebook:
     toc: yes
     toc_depth: 4
@@ -13,7 +15,7 @@ subtitle: glossary of vocabulary used in the course
 ## Packages
 
 **dplyr**  
-tidyverse package for manipulating data, contains the `mutate()`, `filter()`, `select()`, `full_join()` functions and the `%>%` operator
+tidyverse package for manipulating data, contains the `mutate()`, `filter()`, `select()`, `full_join()` functions and includes the `%>%` operator (from the magrittr package)
 
 **ggplot2**  
 tidyverse package for data visualisation 
@@ -22,7 +24,7 @@ tidyverse package for data visualisation
 tidyverse package for reading data into R, contains the `read_tsv()` function
 
 **tidyr**  
-tidyverse package for data tidying, contains the `gather()` function
+tidyverse package for data tidying, contains the `pivot_longer()` function
 
 **tidyverse**  
 a collection of packages that work together for data reading, tidying, manipulating and visualising
@@ -60,9 +62,6 @@ choose rows (from dplyr)
 **`full_join()`**  
 joins 2 tables returning all rows and all columns from both tables.
 
-**`gather()`**  
-function that enables converting from wide to long (tidy) format (from dplyr)
-
 **`getwd()`**  
 find out what the working directory is (get working directory)
 
@@ -89,6 +88,9 @@ add columns (from dplyr)
 
 **`pdf()`**  
 create a pdf, used with `dev.off()` (from base R)
+
+**`pivot_longer()`**  
+function that enables converting from wide to long (tidy) format (from dplyr)
 
 **`pull()`**  
 extract values e.g. out of a column (from dplyr)
@@ -150,7 +152,7 @@ everything in R is an object. The assignment operator `<-` can be used to create
 a package is a collection of functions and usually includes code, documentation, tests and example datasets.
 
 **pipe**  
-`%>%` operator chains together tidyverse commands (from dplyr)
+`%>%` operator chains together tidyverse commands (from the magrittr package)
 
 **scales**  
 scale_fill_manual(), scale_colour_manual(), scale_fill_brewer(), scale_colour_brewer(). Use to specify colours.
