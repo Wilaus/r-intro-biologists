@@ -5,7 +5,7 @@
 Rendered HTML workshop document is hosted here:  
 [https://melbournebioinformatics.github.io/r-intro-biologists/intro\_r\_biologists.html](https://melbournebioinformatics.github.io/r-intro-biologists/intro_r_biologists.html)
 
-The HTML document with embedded solutions is here:
+The HTML document with embedded solutions is here:  
 [https://melbournebioinformatics.github.io/r-intro-biologists/intro\_r\_biologists\_with\_solutions.html](https://melbournebioinformatics.github.io/r-intro-biologists/intro_r_biologists_with_solutions.html)
 
 And the cheatsheet is here:  
