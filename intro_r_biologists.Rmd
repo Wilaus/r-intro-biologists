@@ -360,12 +360,19 @@ The two tables have been joined.
 2. Store the output of the first 20 lines of the `counts` object in a new variable named `subset_counts`.
 3. View the values in the `GSM1480291` column from your `subset_counts` object using the `$` subsetting method.
 4. View the help page of the `mean` function. What is the mean of the values you obtained from the previous question?
-5. Use pivot_longer to create a ‘tidy’ data set called `dat_long` from the following:
+5. How can you use pivot_longer to transform `dat` into a ‘tidy’ data called `dat_long` that contains 3 columns (sample, experiment, value).
 ```
 dat <-  tibble(sample = 1:10,
              experiment_1 = rnorm(10),
              experiment_2 = rnorm(10))
-             ```
+```             
+`dat_long` should look similar to what you get if you paste this into the console (the values in the value column will be different):
+```
+dat_long <- tibble(sample = rep(1:10, each=2),
+experiment = rep(c("experiment_1", "experiment_2"), 10),
+value = rnorm(20))
+dat_long
+```
 6. If you have another table with sample information such as 
 ```
 sampleinfo <- tibble(sample = 1:100,
