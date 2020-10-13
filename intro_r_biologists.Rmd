@@ -163,6 +163,7 @@ The [tidyverse](https://www.tidyverse.org/) makes data science faster, easier an
 \  
 \  
 
+[Why tidyverse? Why tidy data? Why is it such a game-changer?](https://docs.google.com/presentation/d/1N7hKepabvl9OrHjvGJWPjUsfzVdB5xzV5AsFndgSwms/edit#slide=id.p)
 
 ## Loading the data
 
@@ -200,26 +201,29 @@ We can read in a file from a path on our computer on on the web and use this as 
 
 #### Exercise
 
-1. What happens if you type 
-Library(tidyverse)
+1. Test what happens if you type 
+`Library(tidyverse)`  
+What is wrong and how would you fix it?
 
-2. What happens if you type 
-libary(tidyverse)
+2. Test what happens if you type 
+`libary(tidyverse)`  
+What is wrong and how would you fix it?
 
-3. What happens if you type
-library(tidyverse 
+3. Test what happens if you type
+`library(tidyverse`  
+What is wrong and how would you fix it?
 
-4. What happens if you type
-read_csv("data/GSE60450_filtered_metadata.csv)
+4. Test what happens if you type
+`read_csv("data/GSE60450_filtered_metadata.csv)`  
+What is wrong and how would you fix it?
 
-5. What happens if you type
-read_csv("data/GSE60450_filtered_metadata.csv")
+5. Test what happens if you type
+`read_csv("GSE60450_filtered_metadata.csv)`  
+What is wrong and how would you fix it?
 
-6. What happens if you type
-read_csv("GSE60450_filtered_metadata.csv)
-
-7. What happens if you type
-read_tsv("data/GSE60450_filtered_metadata.csv")
+6. Test what happens if you type
+`read_tsv("data/GSE60450_filtered_metadata.csv")`  
+What is wrong and how would you fix it?
 
 
 ## Getting to know the data
@@ -356,11 +360,18 @@ The two tables have been joined.
 2. Store the output of the first 20 lines of the `counts` object in a new variable named `subset_counts`.
 3. View the values in the `GSM1480291` column from your `subset_counts` object using the `$` subsetting method.
 4. View the help page of the `mean` function. What is the mean of the values you obtained from the previous question?
-5. Use pivot_longer to create a ‘tidy’ data set from the following:
+5. Use pivot_longer to create a ‘tidy’ data set called `dat_long` from the following:
+```
 dat <-  tibble(sample = 1:10,
              experiment_1 = rnorm(10),
              experiment_2 = rnorm(10))
-6. What do you think the `left_join`, `right_join` and `inner_join` functions do?
+             ```
+6. If you have another table with sample information such as 
+```
+sampleinfo <- tibble(sample = 1:100,
+group = c(rep("Mutant", 50), rep("Control", 50)))
+```
+Join `dat_long` to `sampleinfo` using the common column called sample. How many rows do you get if you use `full_join`, `left_join`, `right_join`, `inner_join`?
 
 <button onclick="myFunction('q1')">Show solutions</button>
 <div id="q1" style="display:none">
@@ -371,8 +382,8 @@ dat <-  tibble(sample = 1:10,
 2. `subset_counts <- head(counts, n = 20)`
 3. `subset_counts$GSM1480291`
 4.  137.8874 (which is obtained by running `mean(subset_counts$GSM1480291)`)
-5. `pivot_longer(dat, cols=c(experiment_1, experiment_2), names_to=variables, values_to="counts")`
-6. 
+5. `dat_long <- pivot_longer(dat, cols=c(experiment_1, experiment_2), names_to="variables", values_to="counts")`
+6.  110, 20, 110, 20
 </div>
 
 
