@@ -3,18 +3,18 @@ title: "Introduction to R for Biologists"
 author: "Maria Doyle, Jessica Chung, Vicky Perreau"
 date: "`r format(Sys.time(), '%d %B %Y')`"
 output:
-  pdf_document:
-    toc: yes
-    toc_depth: 3
-  html_notebook:
-    toc: yes
-    toc_depth: 3
-    toc_float: yes
   html_document:
     df_print: paged
     toc: yes
     toc_float: yes
     toc_depth: '3'
+  html_notebook:
+    toc: yes
+    toc_depth: 3
+    toc_float: yes
+  pdf_document:
+    toc: yes
+    toc_depth: 3
 ---
 
 <!--
@@ -33,6 +33,12 @@ function myFunction(id) {
 }
 </script>
 
+
+```{r setup, include=FALSE}
+# Smaller images for pdf
+# knitr::opts_chunk$set(out.width="50%")
+options(width=80)
+```
 
 # R for Biologists course
 
@@ -457,6 +463,23 @@ ggplot(data = allinfo, mapping = aes(x = Sample, y = log2(Count + 1))) +
 
 </div>
 
+#### Optional exercise
+
+The `geom_boxplot` function can also take in additional arguments. For example, you can decrease the size of the outlier points by using the `outlier.size` argument like so: `geom_boxplot(outlier.size = 0.5)`. View the help page for `geom_boxplot`. Can you find a way to hide outliers altogether? Plot a boxplot with hidden outliers.
+
+<button onclick="myFunction('q2extra')">Show solutions</button>
+<div id="q2extra" style="display:none">
+
+#### Answers
+
+```{r}
+ggplot(data = allinfo, 
+       mapping = aes(x = Sample, y = log2(Count + 1), fill = characteristics)) + 
+  geom_boxplot(outlier.shape = NA)
+```
+
+</div>
+
 # Colouring by categories
 
 What if we would like to add some colour to the plot, for example, a different colour for each sample. 
@@ -576,7 +599,8 @@ mygenes_counts <- filter(allinfo, gene_symbol %in% mygenes)
 We can make boxplots for just these genes. We *facet* on the `gene_symbol` column using `facet_wrap()`. We add the tilde symbol `~ ` in front of the column we want to facet on.
 
 ```{r}
-ggplot(data = mygenes_counts, mapping = aes(x = Group, y = log2(Count + 1), fill = Group)) +
+ggplot(data = mygenes_counts, 
+       mapping = aes(x = Group, y = log2(Count + 1), fill = Group)) +
   geom_boxplot() +
   facet_wrap(~ gene_symbol)
 ```
@@ -599,7 +623,8 @@ ggplot(data = mygenes_counts, mapping = aes(x = Group, y = log2(Count + 1))) +
 We can colour the groups similar to before using `colour = `.
 
 ```{r}
-ggplot(data = mygenes_counts, mapping = aes(x = Group, y = log2(Count + 1), colour = Group)) +
+ggplot(data = mygenes_counts, 
+       mapping = aes(x = Group, y = log2(Count + 1), colour = Group)) +
   geom_jitter() +
   facet_wrap(~ gene_symbol)
 ```
@@ -626,7 +651,8 @@ ggplot(data = mygenes_counts,
 There are built-in colour palettes that can be handy to use, where the sets of colours are predefined. `scale_colour_brewer()` is a popular one (there is also `scale_fill_brewer()`). You can take a look at the help for `scale_colour_brewer()` to see what palettes are available. The [R colours cheatsheet](https://www.nceas.ucsb.edu/~frazier/RSpatialGuides/colorPaletteCheatsheet.pdf) also shows what the colours of the palettes look like. There's one called "Dark2", let's have a look at that.
 
 ```{r}
-ggplot(data = mygenes_counts, mapping = aes(x = Group, y = log2(Count + 1), colour = Group)) +
+ggplot(data = mygenes_counts, 
+       mapping = aes(x = Group, y = log2(Count + 1), colour = Group)) +
   geom_jitter() +
   facet_wrap(~ gene_symbol) +
   scale_colour_brewer(palette = "Dark2")
@@ -779,7 +805,14 @@ ggplot(data = mygenes_counts,
 ```
 We could do similar if we wanted to have the genes in the facets in a different order. For example, we could add another column called "gene_symbol_f" where we make the gene_symbol column into a factor, specifying the order of the levels.
 
+#### Exercise
+
+Create a plot (any plot whatsoever) and share it with the class by pasting the image in the Google Docs link provided in your workshop. You plot should use the `subtitle` argument in the `labs` function to add a unique identifier (e.g. a message and your name or initials) which is displayed below the title.
+
+Tip: An easy way to copy your plot in RStudio is using the plot pane's export option and selecting "Copy to Clipboard...". You can then paste it into the provided Google document.
+
 # Saving plots
+
 We can save plots interactively by clicking Export in the Plots window and saving as e.g. "myplot.pdf". Or we can output plots to pdf using `pdf()` followed by `dev.off()`. We put our plot code after the call to `pdf()` and before closing the plot device with `dev.off()`.
 
 Let's save our last plot.
