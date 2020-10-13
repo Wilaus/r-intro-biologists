@@ -169,7 +169,7 @@ The [tidyverse](https://www.tidyverse.org/) makes data science faster, easier an
 \  
 \  
 
-[Why tidyverse? Why tidy data? Why is it such a game-changer?](https://docs.google.com/presentation/d/1N7hKepabvl9OrHjvGJWPjUsfzVdB5xzV5AsFndgSwms/edit#slide=id.p)
+[Why tidyverse? Why tidy data? Why is it such a game-changer?](https://www.openscapes.org/blog/2020/10/12/tidy-data/)
 
 ## Loading the data
 
@@ -803,6 +803,7 @@ ggplot(data = mygenes_counts,
         panel.grid.major = element_blank(),
         panel.grid.minor = element_blank())
 ```
+
 We could do similar if we wanted to have the genes in the facets in a different order. For example, we could add another column called "gene_symbol_f" where we make the gene_symbol column into a factor, specifying the order of the levels.
 
 #### Exercise
