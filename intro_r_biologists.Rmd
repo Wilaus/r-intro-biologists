@@ -226,7 +226,7 @@ What is wrong and how would you fix it?
 What is wrong and how would you fix it?
 
 
-## Getting to know the data
+# Getting to know the data
 
 When assigning a value to an object, R does not print the value. For example, here we don't see what's in the counts or sampleinfo files. But there are ways we can look at the data. We will demonstrate using the `sampleinfo` object.
 
@@ -360,17 +360,17 @@ The two tables have been joined.
 2. Store the output of the first 20 lines of the `counts` object in a new variable named `subset_counts`.
 3. View the values in the `GSM1480291` column from your `subset_counts` object using the `$` subsetting method.
 4. View the help page of the `mean` function. What is the mean of the values you obtained from the previous question?
-5. How can you use pivot_longer to transform `dat` into a ‘tidy’ data called `dat_long` that contains 3 columns (sample, experiment, value).
+5. How can you use pivot_longer to transform `dat` into a ‘tidy’ data called `dat_long` that contains 3 columns (sample, experiment, count).
 ```
 dat <-  tibble(sample = 1:10,
              experiment_1 = rnorm(10),
              experiment_2 = rnorm(10))
 ```             
-`dat_long` should look similar to what you get if you paste this into the console (the values in the value column will be different):
+`dat_long` should look similar to what you get if you paste this into the console (the values in the count column will be different):
 ```
 dat_long <- tibble(sample = rep(1:10, each=2),
 experiment = rep(c("experiment_1", "experiment_2"), 10),
-value = rnorm(20))
+count = rnorm(20))
 dat_long
 ```
 6. If you have another table with sample information such as 
@@ -389,7 +389,7 @@ Join `dat_long` to `sampleinfo` using the common column called sample. How many 
 2. `subset_counts <- head(counts, n = 20)`
 3. `subset_counts$GSM1480291`
 4.  137.8874 (which is obtained by running `mean(subset_counts$GSM1480291)`)
-5. `dat_long <- pivot_longer(dat, cols=c(experiment_1, experiment_2), names_to="variables", values_to="counts")`
+5. `dat_long <- pivot_longer(dat, cols=c(experiment_1, experiment_2), names_to="experiment", values_to="count")`
 6.  110, 20, 110, 20
 </div>
 
