@@ -378,7 +378,7 @@ dat_long
 sampleinfo <- tibble(sample = 1:100,
 group = c(rep("Mutant", 50), rep("Control", 50)))
 ```
-Join `dat_long` to `sampleinfo` using the common column called sample. How many rows do you get if you use `full_join`, `left_join`, `right_join`, `inner_join`?
+Join `dat_long` to `sampleinfo` using the common column called sample. How many rows do you get if you use i) `full_join`, ii) `left_join`, iii)  `right_join`, iv) `inner_join`?
 
 <button onclick="myFunction('q1')">Show solutions</button>
 <div id="q1" style="display:none">
@@ -390,7 +390,7 @@ Join `dat_long` to `sampleinfo` using the common column called sample. How many 
 3. `subset_counts$GSM1480291`
 4.  137.8874 (which is obtained by running `mean(subset_counts$GSM1480291)`)
 5. `dat_long <- pivot_longer(dat, cols=c(experiment_1, experiment_2), names_to="experiment", values_to="count")`
-6.  110, 20, 110, 20
+6.  i) 110, ii) 20, iii) 110, iv) 20
 </div>
 
 
