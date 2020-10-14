@@ -439,11 +439,6 @@ Box plots are useful summaries, but hide the shape of the distribution. For exam
 You can easily make different types of plots with ggplot by using different geoms. Using the same data (same x and y values), try editing the code above to make a violin plot (Hint: there's a `geom_violin`)
 
 
-#### Optional exercise
-
-The `geom_boxplot` function can also take in additional arguments. For example, you can decrease the size of the outlier points by using the `outlier.size` argument like so: `geom_boxplot(outlier.size = 0.5)`. View the help page for `geom_boxplot`. Can you find a way to hide outliers altogether? Plot a boxplot with hidden outliers.
-
-
 # Colouring by categories
 
 What if we would like to add some colour to the plot, for example, a different colour for each sample. 
@@ -473,6 +468,10 @@ Modify the plot above. Colour by other variables (columns) in the metadata file:
 2. immunophenotype
 3. \`developmental stage\` (As there is a space in the column name we need to use backticks around the name (\`\`). Note that backticks are not single quotes (\'\'). The backtick key is usually at the top left corner of a laptop keyboard under the ESC key. Check what happens if you don't use backticks.)
 
+
+#### Optional exercise
+
+The `geom_boxplot` function can also take in additional arguments. For example, you can decrease the size of the outlier points by using the `outlier.size` argument like so: `geom_boxplot(outlier.size = 0.5)`. View the help page for `geom_boxplot`. Can you find a way to hide outliers altogether? Plot a boxplot with hidden outliers.
 
 
 # Creating subplots for each gene
@@ -583,11 +582,6 @@ ggplot(data = mygenes_counts,
   facet_wrap(~ gene_symbol) +
   scale_colour_brewer(palette = "Dark2")
 ```
-
-
-#### Exercise
-Make a colourblind-friendly plot using the colourblind-friendly palettes [here](http://www.cookbook-r.com/Graphs/Colors_(ggplot2)/#a-colorblind-friendly-palette).
-
 
 
 ## Axis labels and Title
@@ -708,11 +702,16 @@ ggplot(data = mygenes_counts,
 
 We could do similar if we wanted to have the genes in the facets in a different order. For example, we could add another column called "gene_symbol_f" where we make the gene_symbol column into a factor, specifying the order of the levels.
 
+
 #### Exercise
 
-Create a plot (any plot whatsoever) and share it with the class by pasting the image in the Google Docs link provided in your workshop. You plot should use the `subtitle` argument in the `labs` function to add a unique identifier (e.g. a message and your name or initials) which is displayed below the title.
+1. Make a colourblind-friendly plot using the colourblind-friendly palettes [here](http://www.cookbook-r.com/Graphs/Colors_(ggplot2)/#a-colorblind-friendly-palette).
+
+2. Create a plot (any plot whatsoever) and share it with the class by pasting the image in the Google Docs link provided in your workshop. You plot should use the `subtitle` argument in the `labs` function to add a unique identifier (e.g. a message and your name or initials) which is displayed below the title.
 
 Tip: An easy way to copy your plot in RStudio is using the plot pane's export option and selecting "Copy to Clipboard...". You can then paste it into the provided Google document.
+
+
 
 # Saving plots
 

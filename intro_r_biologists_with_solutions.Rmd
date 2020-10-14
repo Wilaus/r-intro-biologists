@@ -463,23 +463,6 @@ ggplot(data = allinfo, mapping = aes(x = Sample, y = log2(Count + 1))) +
 
 </div>
 
-#### Optional exercise
-
-The `geom_boxplot` function can also take in additional arguments. For example, you can decrease the size of the outlier points by using the `outlier.size` argument like so: `geom_boxplot(outlier.size = 0.5)`. View the help page for `geom_boxplot`. Can you find a way to hide outliers altogether? Plot a boxplot with hidden outliers.
-
-<button onclick="myFunction('q2extra')">Show solutions</button>
-<div id="q2extra" style="display:none">
-
-#### Answers
-
-```{r}
-ggplot(data = allinfo, 
-       mapping = aes(x = Sample, y = log2(Count + 1), fill = characteristics)) + 
-  geom_boxplot(outlier.shape = NA)
-```
-
-</div>
-
 # Colouring by categories
 
 What if we would like to add some colour to the plot, for example, a different colour for each sample. 
@@ -533,6 +516,22 @@ ggplot(data = allinfo,
 
 </div>
 
+#### Optional exercise
+
+The `geom_boxplot` function can also take in additional arguments. For example, you can decrease the size of the outlier points by using the `outlier.size` argument like so: `geom_boxplot(outlier.size = 0.5)`. View the help page for `geom_boxplot`. Can you find a way to hide outliers altogether? Plot a boxplot with hidden outliers.
+
+<button onclick="myFunction('q3extra')">Show solutions</button>
+<div id="q3extra" style="display:none">
+
+#### Answers
+
+```{r}
+ggplot(data = allinfo, 
+       mapping = aes(x = Sample, y = log2(Count + 1), fill = characteristics)) + 
+  geom_boxplot(outlier.shape = NA)
+```
+
+</div>
 
 # Creating subplots for each gene
 
@@ -659,35 +658,6 @@ ggplot(data = mygenes_counts,
 ```
 
 
-#### Exercise
-Make a colourblind-friendly plot using the colourblind-friendly palettes [here](http://www.cookbook-r.com/Graphs/Colors_(ggplot2)/#a-colorblind-friendly-palette).
-
-<button onclick="myFunction('q4')">Show solutions</button>
-<div id="q4" style="display:none">
-
-#### Answers
-
-```{r eval=FALSE}
-# Define colourblind colours
-cbPalette <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2")
-
-# An example of a colourblind-friendly stripchart
-ggplot(data = mygenes_counts,
-       mapping = aes(x = Group, y = log2(Count + 1), colour = Group)) +
-  geom_jitter() +
-  facet_wrap(~ gene_symbol) +
-  scale_colour_manual(values = cbPalette)
-
-# An example of a colourblind-friendly boxplot
-ggplot(data = allinfo, 
-       mapping = aes(x = Sample, y = log2(Count + 1), fill = characteristics)) + 
-  geom_boxplot() +
-  scale_fill_manual(values = cbPalette)
-```
-
-</div>
-
-
 ## Axis labels and Title
 
 We can change the axis labels and add a title with `labs()`. To change the x axis label we use `labs(x = "New name")`. To change the y axis label we use `labs(y = "New name")` or we can change them all at the same time.
@@ -806,11 +776,44 @@ ggplot(data = mygenes_counts,
 
 We could do similar if we wanted to have the genes in the facets in a different order. For example, we could add another column called "gene_symbol_f" where we make the gene_symbol column into a factor, specifying the order of the levels.
 
+
 #### Exercise
 
-Create a plot (any plot whatsoever) and share it with the class by pasting the image in the Google Docs link provided in your workshop. You plot should use the `subtitle` argument in the `labs` function to add a unique identifier (e.g. a message and your name or initials) which is displayed below the title.
+1. Make a colourblind-friendly plot using the colourblind-friendly palettes [here](http://www.cookbook-r.com/Graphs/Colors_(ggplot2)/#a-colorblind-friendly-palette).
+
+2. Create a plot (any plot whatsoever) and share it with the class by pasting the image in the Google Docs link provided in your workshop. You plot should use the `subtitle` argument in the `labs` function to add a unique identifier (e.g. a message and your name or initials) which is displayed below the title.
 
 Tip: An easy way to copy your plot in RStudio is using the plot pane's export option and selecting "Copy to Clipboard...". You can then paste it into the provided Google document.
+
+<button onclick="myFunction('q4')">Show solutions</button>
+<div id="q4" style="display:none">
+
+#### Answers
+
+```{r eval=FALSE}
+# Define colourblind colours
+cbPalette <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2")
+
+# An example of a colourblind-friendly stripchart
+ggplot(data = mygenes_counts, 
+       mapping = aes(x = Group_f, y = log2(Count + 1), colour = Group_f)) +
+  geom_jitter() +
+  facet_wrap(~ gene_symbol) +
+  labs(x = "Cell type and stage", y = "Count", title = "Mammary gland RNA-seq data") +
+  theme(axis.text.x = element_text(angle = 90)) +
+  theme_bw() +
+  scale_colour_manual(values = cbPalette)
+
+# An example of a colourblind-friendly boxplot
+ggplot(data = allinfo, 
+       mapping = aes(x = Sample, y = log2(Count + 1), fill = characteristics)) + 
+  geom_boxplot() +
+  theme_bw() +
+  scale_fill_manual(values = cbPalette)
+```
+
+</div>
+
 
 # Saving plots
 
