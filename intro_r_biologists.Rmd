@@ -219,17 +219,26 @@ What is wrong and how would you fix it?
 `library(tidyverse`  
 What is wrong and how would you fix it?
 
-4. Test what happens if you type
-`read_csv("data/GSE60450_filtered_metadata.csv)`  
-What is wrong and how would you fix it?
-
-5. Test what happens if you type
-`read_csv("GSE60450_filtered_metadata.csv)`  
-What is wrong and how would you fix it?
-
-6. Test what happens if you type
+4. Test what happens if you type  
 `read_tsv("data/GSE60450_filtered_metadata.csv")`  
-What is wrong and how would you fix it?
+What is wrong and how would you fix it?  
+ 
+5. Test what happens if you type  
+`read_csv("data/GSE60450_filtered_metadata.csv)`  
+What is wrong and how would you fix it?  
+ 
+6. Test what happens if you type  
+`read_csv("GSE60450_filtered_metadata.csv)`  
+What is wrong and how would you fix it?  
+ 
+7. What is the name of the first column you get with each of these 2 commands?  
+`read.csv("data/GSE60450_filtered_metadata.csv")`  
+and  
+`read_csv("data/GSE60450_filtered_metadata.csv")`  
+ 
+8. If you run  
+`read_csv("data/GSE60450_filtered_metadata.csv")`  
+what is the difference between the column header you see `developmental stage` and 'developmental stage'?  
 
 
 # Getting to know the data
