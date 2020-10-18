@@ -95,6 +95,8 @@ In the window that appears, find the folder you created (e.g. `Intro_R_course`),
 
 Save the script you created in the previous section as `intro.R` in this directory. You can do this by clicking on `File > Save` and the default location should be the current working directory (e.g. `Intro_R_course`).
 
+_Note: You can use an RStudio project as described [here](https://r4ds.had.co.nz/workflow-projects.html) to automatically keep track of and set the working directory._
+
 ## Packages
 
 If it's not already installed on your computer, you can use the `install.packages` **function** to install a **package**. A package is a collection of functions along with documentation, code, tests and example data.
