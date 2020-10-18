@@ -375,11 +375,11 @@ The two tables have been joined.
 
 #### Exercise
 
-1. View the help page of the `head` function and find the "Arguments" heading. What does the `n` argument do? What do you expect the output of `head(sampleinfo, n = 8)` to be?
-2. Store the output of the first 20 lines of the `counts` object in a new variable named `subset_counts`.
-3. View the values in the `GSM1480291` column from your `subset_counts` object using the `$` subsetting method.
-4. View the help page of the `mean` function. What is the mean of the values you obtained from the previous question?
-5. How can you use pivot_longer to transform `dat` into a ‘tidy’ data called `dat_long` that contains 3 columns (sample, experiment, count).
+1. View the help page of the `head` function and find the "Arguments" heading. What does the `n` argument do? How many rows and columns do you get with `head(sampleinfo, n = 8)`?  
+2. Store the output of the first 20 lines of the `counts` object in a new variable named `subset_counts`. What is the gene_symbol in row 20?  
+3. View the values in the `GSM1480291` column from your `subset_counts` object using the `$` subsetting method. What is the 5th value?  
+4. View the help page of the `mean` function. What is the mean of the column of values you obtained from the previous question?  
+5. How can you use `pivot_longer` to transform `dat` into a ‘tidy’ data called `dat_long` that contains 3 columns (sample, experiment, count).
 ```
 dat <-  tibble(sample = 1:10,
              experiment_1 = rnorm(10),
