@@ -95,6 +95,8 @@ In the window that appears, find the folder you created (e.g. `Intro_R_course`),
 
 Save the script you created in the previous section as `intro.R` in this directory. You can do this by clicking on `File > Save` and the default location should be the current working directory (e.g. `Intro_R_course`).
 
+_Note: You can use an RStudio project as described [here](https://r4ds.had.co.nz/workflow-projects.html) to automatically keep track of and set the working directory._
+
 ## Packages
 
 If it's not already installed on your computer, you can use the `install.packages` **function** to install a **package**. A package is a collection of functions along with documentation, code, tests and example data.
@@ -103,7 +105,9 @@ If it's not already installed on your computer, you can use the `install.package
 install.packages("tidyverse")
 ```
 
-We will see many functions in this tutorial. Functions are "canned scripts" that automate more complicated sets of commands. Many functions are predefined, or can be made available by importing R packages. A function usually takes one or more inputs called *arguments*. Here tidyverse is the argument to the `install.packages()` function. **Note that functions require parentheses after the function name.**
+We will see many functions in this tutorial. Functions are "canned scripts" that automate more complicated sets of commands. Many functions are predefined, or can be made available by importing R packages. A function usually takes one or more inputs called *arguments*. Here tidyverse is the argument to the `install.packages()` function. 
+
+_Note: functions require parentheses after the function name._
 
 ## Getting help
 
@@ -219,17 +223,26 @@ What is wrong and how would you fix it?
 `library(tidyverse`  
 What is wrong and how would you fix it?
 
-4. Test what happens if you type
-`read_csv("data/GSE60450_filtered_metadata.csv)`  
-What is wrong and how would you fix it?
-
-5. Test what happens if you type
-`read_csv("GSE60450_filtered_metadata.csv)`  
-What is wrong and how would you fix it?
-
-6. Test what happens if you type
+4. Test what happens if you type  
 `read_tsv("data/GSE60450_filtered_metadata.csv")`  
-What is wrong and how would you fix it?
+What is wrong and how would you fix it?  
+ 
+5. Test what happens if you type  
+`read_csv("data/GSE60450_filtered_metadata.csv)`  
+What is wrong and how would you fix it?  
+ 
+6. Test what happens if you type  
+`read_csv("GSE60450_filtered_metadata.csv)`  
+What is wrong and how would you fix it?  
+ 
+7. What is the name of the first column you get with each of these 2 commands?  
+`read.csv("data/GSE60450_filtered_metadata.csv")`  
+and  
+`read_csv("data/GSE60450_filtered_metadata.csv")`  
+ 
+8. If you run  
+`read_csv("data/GSE60450_filtered_metadata.csv")`  
+what is the difference between the column header you see `developmental stage` and 'developmental stage'?  
 
 
 # Getting to know the data
@@ -362,11 +375,11 @@ The two tables have been joined.
 
 #### Exercise
 
-1. View the help page of the `head` function and find the "Arguments" heading. What does the `n` argument do? What do you expect the output of `head(sampleinfo, n = 8)` to be?
-2. Store the output of the first 20 lines of the `counts` object in a new variable named `subset_counts`.
-3. View the values in the `GSM1480291` column from your `subset_counts` object using the `$` subsetting method.
-4. View the help page of the `mean` function. What is the mean of the values you obtained from the previous question?
-5. How can you use pivot_longer to transform `dat` into a ‘tidy’ data called `dat_long` that contains 3 columns (sample, experiment, count).
+1. View the help page of the `head` function and find the "Arguments" heading. What does the `n` argument do? How many rows and columns do you get with `head(sampleinfo, n = 8)`?  
+2. Store the output of the first 20 lines of the `counts` object in a new variable named `subset_counts`. What is the gene_symbol in row 20?  
+3. View the values in the `GSM1480291` column from your `subset_counts` object using the `$` subsetting method. What is the 5th value?  
+4. View the help page of the `mean` function. What is the mean of the column of values you obtained from the previous question?  
+5. How can you use `pivot_longer` to transform `dat` into a ‘tidy’ data called `dat_long` that contains 3 columns (sample, experiment, count).
 ```
 dat <-  tibble(sample = 1:10,
              experiment_1 = rnorm(10),
@@ -420,7 +433,9 @@ There are different geoms we can use to create different types of plot e.g. `geo
 
 ## Creating a boxplot
 
-We can make boxplots to visualise the distribution of the counts for each sample. This helps us to compare the samples and check if any look unusual. **Note that with ggplot the "+" must go at the end of the line, it can't go at the beginning.**
+We can make boxplots to visualise the distribution of the counts for each sample. This helps us to compare the samples and check if any look unusual. 
+
+_Note: with ggplot the "+" must go at the end of the line, it can't go at the beginning._
 
 ```{r}
 ggplot(data = allinfo, mapping = aes(x = Sample, y = Count)) + 
@@ -436,7 +451,7 @@ ggplot(data = allinfo, mapping = aes(x = Sample, y = log2(Count))) +
   geom_boxplot()
 ```
 
-Note that we get a warning here about rows containing non-finite values being removed. This is because some of the genes have a count of zero in the samples and a log of zero is undefined. We can add a small number to every count to avoid the zeros being dropped.
+We get a warning here about rows containing non-finite values being removed. This is because some of the genes have a count of zero in the samples and a log of zero is undefined. We can add a small number to every count to avoid the zeros being dropped.
 
 ```{r}
 ggplot(data = allinfo, mapping = aes(x = Sample, y = log2(Count + 1))) + 
@@ -490,7 +505,9 @@ Modify the plot above. Colour by other variables (columns) in the metadata file:
 
 1. characteristics
 2. immunophenotype
-3. \`developmental stage\` (As there is a space in the column name we need to use backticks around the name (\`\`). Note that backticks are not single quotes (\'\'). The backtick key is usually at the top left corner of a laptop keyboard under the ESC key. Check what happens if you don't use backticks.)
+3. \`developmental stage\` (As there is a space in the column name we need to use backticks around the name (\`\`). 
+
+_Note: backticks are not single quotes (\'\'). The backtick key is usually at the top left corner of a laptop keyboard under the ESC key. Check what happens if you don't use backticks.)_
 
 <button onclick="myFunction('q3')">Show solutions</button>
 <div id="q3" style="display:none">
